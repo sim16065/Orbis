@@ -35,9 +35,9 @@ export default function Navbar() {
                             <Link
                                 key={href}
                                 href={href}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
-                                    ? "bg-violet-500/20 text-violet-300 border border-violet-500/30"
-                                    : "text-slate-400 hover:text-white hover:bg-white/10"
+                                className={`flex items-center gap-3 px-5 py-2.5 rounded-xl text-lg font-bold transition-all duration-200 ${isActive
+                                    ? "bg-violet-500/20 text-violet-300 border border-violet-500/30 shadow-inner"
+                                    : "text-slate-300 hover:text-white hover:bg-white/10"
                                     }`}
                             >
                                 <span>{icon}</span>
@@ -69,10 +69,10 @@ export default function Navbar() {
                             <Link
                                 key={href}
                                 href={href}
-                                className={`flex-1 flex flex-col items-center gap-1 py-3 text-xs font-medium transition-colors ${isActive ? "text-violet-400" : "text-slate-500"
+                                className={`flex-1 flex flex-col items-center gap-1.5 py-4 text-sm font-bold transition-colors ${isActive ? "text-violet-400" : "text-slate-400"
                                     }`}
                             >
-                                <span className="text-lg">{icon}</span>
+                                <span className="text-2xl">{icon}</span>
                                 {label}
                             </Link>
                         );

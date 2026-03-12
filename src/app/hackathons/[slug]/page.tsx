@@ -33,7 +33,6 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
                     <div className="flex flex-wrap gap-2 mb-4">
                         <Badge variant="violet">{hackathon.status === 'upcoming' ? '모집중' : hackathon.status === 'ongoing' ? '진행중' : '종료'}</Badge>
                         <Badge variant="sky">{hackathon.mode === 'online' ? '온라인' : hackathon.mode === 'offline' ? '오프라인' : '하이브리드'}</Badge>
-                        <Badge variant="amber">{hackathon.difficulty === 'beginner' ? '입문' : hackathon.difficulty === 'intermediate' ? '중급' : '고급'}</Badge>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
                         {hackathon.title}

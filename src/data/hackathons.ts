@@ -14,7 +14,6 @@ export interface Hackathon {
     endDate: string;
     registrationDeadline: string;
     status: "upcoming" | "ongoing" | "ended";
-    difficulty: "beginner" | "intermediate" | "advanced";
     mode: "online" | "offline" | "hybrid";
     imageUrl: string;
     location?: string;
@@ -38,7 +37,6 @@ export const hackathons: Hackathon[] = [
         endDate: "2025-04-17",
         registrationDeadline: "2025-04-01",
         status: "upcoming",
-        difficulty: "intermediate",
         mode: "hybrid",
         imageUrl: "/images/hackathon-ai.jpg",
         location: "서울 코엑스",
@@ -60,7 +58,6 @@ export const hackathons: Hackathon[] = [
         endDate: "2025-03-22",
         registrationDeadline: "2025-03-10",
         status: "ongoing",
-        difficulty: "advanced",
         mode: "online",
         imageUrl: "/images/hackathon-web3.jpg",
     },
@@ -81,7 +78,6 @@ export const hackathons: Hackathon[] = [
         endDate: "2025-02-03",
         registrationDeadline: "2025-01-20",
         status: "ended",
-        difficulty: "beginner",
         mode: "offline",
         imageUrl: "/images/hackathon-green.jpg",
         location: "부산 벡스코",
@@ -103,7 +99,6 @@ export const hackathons: Hackathon[] = [
         endDate: "2025-05-12",
         registrationDeadline: "2025-04-25",
         status: "upcoming",
-        difficulty: "intermediate",
         mode: "hybrid",
         imageUrl: "/images/hackathon-health.jpg",
         location: "서울 강남",
@@ -125,7 +120,6 @@ export const hackathons: Hackathon[] = [
         endDate: "2025-06-07",
         registrationDeadline: "2025-05-20",
         status: "upcoming",
-        difficulty: "advanced",
         mode: "online",
         imageUrl: "/images/hackathon-fintech.jpg",
     },
@@ -146,7 +140,6 @@ export const hackathons: Hackathon[] = [
         endDate: "2025-07-17",
         registrationDeadline: "2025-07-01",
         status: "upcoming",
-        difficulty: "beginner",
         mode: "online",
         imageUrl: "/images/hackathon-edu.jpg",
     },

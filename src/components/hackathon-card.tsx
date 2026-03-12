@@ -17,11 +17,6 @@ const statusConfig = {
     ended: { label: "종료", color: "slate" as const },
 };
 
-const difficultyConfig = {
-    beginner: { label: "입문", color: "sky" as const },
-    intermediate: { label: "중급", color: "amber" as const },
-    advanced: { label: "고급", color: "rose" as const },
-};
 
 const modeConfig = {
     online: "🌐 온라인",
@@ -44,7 +39,6 @@ export default function HackathonCard({
     };
 
     const status = statusConfig[hackathon.status];
-    const difficulty = difficultyConfig[hackathon.difficulty];
     const progress = Math.round(
         (hackathon.participants / hackathon.maxParticipants) * 100
     );
@@ -57,7 +51,6 @@ export default function HackathonCard({
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-500/20 via-transparent to-transparent" />
                     <div className="absolute top-3 left-3 flex gap-2">
                         <Badge variant={status.color}>{status.label}</Badge>
-                        <Badge variant={difficulty.color}>{difficulty.label}</Badge>
                     </div>
                     {/* 북마크 버튼 */}
                     <button

@@ -19,12 +19,6 @@ const MODE_FILTERS = [
     { value: "hybrid", label: "하이브리드" },
 ];
 
-const DIFFICULTY_FILTERS = [
-    { value: "all", label: "전체" },
-    { value: "beginner", label: "입문" },
-    { value: "intermediate", label: "중급" },
-    { value: "advanced", label: "고급" },
-];
 
 const SORT_OPTIONS = [
     { value: "deadline", label: "마감일 순" },
@@ -36,7 +30,6 @@ export default function HackathonsPage() {
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
     const [modeFilter, setModeFilter] = useState("all");
-    const [difficultyFilter, setDifficultyFilter] = useState("all");
     const [sortBy, setSortBy] = useState("deadline");
     const { isBookmarked, toggleBookmark } = useBookmarks();
 
@@ -49,9 +42,7 @@ export default function HackathonsPage() {
                 h.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
             const matchStatus = statusFilter === "all" || h.status === statusFilter;
             const matchMode = modeFilter === "all" || h.mode === modeFilter;
-            const matchDifficulty =
-                difficultyFilter === "all" || h.difficulty === difficultyFilter;
-            return matchSearch && matchStatus && matchMode && matchDifficulty;
+            return matchSearch && matchStatus && matchMode;
         });
 
         result = [...result].sort((a, b) => {
@@ -66,7 +57,7 @@ export default function HackathonsPage() {
         });
 
         return result;
-    }, [search, statusFilter, modeFilter, difficultyFilter, sortBy]);
+    }, [search, statusFilter, modeFilter, sortBy]);
 
     return (
         <div className="min-h-screen px-6 py-10">
@@ -114,8 +105,8 @@ export default function HackathonsPage() {
                                 key={f.value}
                                 onClick={() => setStatusFilter(f.value)}
                                 className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${statusFilter === f.value
-                                        ? "bg-violet-600 text-white shadow-md"
-                                        : "text-slate-400 hover:text-white"
+                                    ? "bg-violet-600 text-white shadow-md"
+                                    : "text-slate-400 hover:text-white"
                                     }`}
                             >
                                 {f.label}
@@ -130,8 +121,8 @@ export default function HackathonsPage() {
                                 key={f.value}
                                 onClick={() => setModeFilter(f.value)}
                                 className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${modeFilter === f.value
-                                        ? "bg-indigo-600 text-white shadow-md"
-                                        : "text-slate-400 hover:text-white"
+                                    ? "bg-indigo-600 text-white shadow-md"
+                                    : "text-slate-400 hover:text-white"
                                     }`}
                             >
                                 {f.label}
@@ -139,21 +130,6 @@ export default function HackathonsPage() {
                         ))}
                     </div>
 
-                    {/* 난이도 필터 */}
-                    <div className="flex gap-1.5 bg-slate-800/60 border border-white/10 rounded-xl p-1">
-                        {DIFFICULTY_FILTERS.map((f) => (
-                            <button
-                                key={f.value}
-                                onClick={() => setDifficultyFilter(f.value)}
-                                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${difficultyFilter === f.value
-                                        ? "bg-fuchsia-600 text-white shadow-md"
-                                        : "text-slate-400 hover:text-white"
-                                    }`}
-                            >
-                                {f.label}
-                            </button>
-                        ))}
-                    </div>
 
                     {/* 정렬 */}
                     <select

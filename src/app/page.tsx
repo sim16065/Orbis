@@ -3,6 +3,7 @@ import { hackathons } from "@/data/hackathons";
 import { teams } from "@/data/teams";
 import { leaderboards } from "@/data/leaderboards";
 import HackathonCard from "@/components/hackathon-card";
+import { Badge } from "@/components/ui";
 
 export default function HomePage() {
   const featuredHackathons = hackathons.filter((h) => h.status !== "ended").slice(0, 3);
@@ -17,145 +18,140 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
       {/* ── 히어로 섹션 ── */}
-      <section className="relative overflow-hidden pt-12 pb-32 w-full">
+      <section className="relative overflow-hidden pt-20 pb-48 w-full">
         {/* 배경 그라데이션 */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl" />
-          <div className="absolute top-20 right-1/4 w-80 h-80 bg-indigo-600/15 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/2 w-64 h-64 bg-fuchsia-600/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[120px]" />
+          <div className="absolute top-40 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px]" />
           {/* 그리드 패턴 */}
           <div
-            className="absolute inset-0 opacity-[0.04]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
               backgroundImage:
                 "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-              backgroundSize: "64px 64px",
+              backgroundSize: "80px 80px",
             }}
           />
         </div>
 
-        <div className="text-center w-full">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-sm font-medium mb-8 animate-fade-in">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-            지금 12개의 해커톤이 진행 중입니다
+        <div className="text-center w-full max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-sm font-semibold mb-12 animate-fade-in">
+            <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
+            글로벌 최고 수준의 빌더들이 이곳에서 연결되고 있습니다
           </div>
 
-          <h1 className="text-6xl md:text-8xl font-extrabold mb-6 leading-tight tracking-tight animate-fade-in-up">
+          <h1 className="text-7xl md:text-[100px] font-black mb-10 leading-[1.05] tracking-tight animate-fade-in-up">
             아이디어를{" "}
             <span className="gradient-text">현실로</span>
             <br />
             만드는 공간
           </h1>
 
-          <p className="text-xl text-slate-400 mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-100">
-            최고의 해커톤을 찾고, 꿈의 팀을 꾸리고, 함께 세상을 바꾸세요.
-            <br />
-            Orbis에서 당신의 다음 도전이 시작됩니다.
+          <p className="text-2xl text-slate-400 mb-14 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-100 font-light">
+            최고의 해커톤을 찾고, 꿈의 팀을 꾸리고, 함께 세상을 바꾸세요.<br />
+            Orbis는 당신의 기술적 성장을 위한 모든 여정을 함께합니다.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up delay-200">
+          <div className="flex flex-wrap justify-center gap-6 animate-fade-in-up delay-200">
             <Link
               href="/hackathons"
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold text-lg shadow-xl shadow-violet-500/30 hover:from-violet-500 hover:to-indigo-500 hover:shadow-violet-500/50 transition-all duration-300 hover:-translate-y-0.5"
+              className="px-10 py-5 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold text-xl shadow-2xl shadow-violet-500/40 hover:from-violet-500 hover:to-indigo-500 transition-all duration-300 hover:-translate-y-1"
             >
-              <span>⚡</span>
               해커톤 둘러보기
             </Link>
             <Link
               href="/camp"
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-white/10 text-white font-bold text-lg border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-0.5"
+              className="px-10 py-5 rounded-2xl bg-white/5 text-white font-bold text-xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 backdrop-blur-md"
             >
-              <span>👥</span>
-              팀 모집 보기
+              팀 모집 찾기
             </Link>
           </div>
         </div>
       </section>
 
       {/* ── 통계 섹션 ── */}
-      <section className="pb-16 w-full">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.map((stat) => (
+      <section className="py-32 w-full border-y border-white/5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {stats.map((stat, i) => (
             <div
               key={stat.label}
-              className="bg-slate-800/40 border border-white/10 rounded-2xl p-6 text-center backdrop-blur-sm hover:border-violet-500/30 transition-colors"
+              className="text-center group"
             >
-              <div className="text-3xl mb-2">{stat.icon}</div>
-              <div className="text-3xl font-extrabold text-white mb-1">
+              <div className="text-4xl mb-4 grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110">{stat.icon}</div>
+              <div className="text-5xl font-black text-white mb-2 tracking-tighter">
                 {stat.value}
               </div>
-              <div className="text-sm text-slate-400">{stat.label}</div>
+              <div className="text-base text-slate-500 font-medium uppercase tracking-widest">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── 추천 해커톤 ── */}
-      <section className="pb-20 w-full">
-        <div className="flex items-center justify-between mb-8">
+      <section className="py-48 w-full">
+        <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 mb-16">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-1">🔥 지금 인기 해커톤</h2>
-            <p className="text-slate-400">놓치면 후회할 해커톤들</p>
+            <h2 className="text-5xl font-black text-white mb-4 tracking-tight italic">🔥 NEXT CHALLENGE</h2>
+            <p className="text-slate-400 text-lg">지금 바로 참여할 수 있는 최신 해커톤 리스트</p>
           </div>
           <Link
             href="/hackathons"
-            className="text-violet-400 hover:text-violet-300 text-sm font-medium flex items-center gap-1 transition-colors"
+            className="group flex items-center gap-2 text-violet-400 font-bold text-lg hover:text-violet-300 transition-all"
           >
-            전체 보기 →
+            전체 해커톤 보기
+            <span className="transform group-hover:translate-x-2 transition-transform">→</span>
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {featuredHackathons.map((h) => (
             <HackathonCard key={h.id} hackathon={h} />
           ))}
         </div>
       </section>
 
-      {/* ── 팀 모집 ── */}
-      <section className="pb-20 w-full">
-        <div className="flex items-center justify-between mb-8">
+      {/* ── 팀 모집 ── (배경 반전 스타일) */}
+      <section className="py-48 px-12 -mx-12 bg-white/[0.02] border-y border-white/5 rounded-[60px] w-[calc(100%+96px)]">
+        <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 mb-16">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-1">👥 팀원 모집 중</h2>
-            <p className="text-slate-400">나를 기다리는 팀을 찾아보세요</p>
+            <h2 className="text-5xl font-black text-white mb-4 tracking-tight italic">👥 JOIN A TEAM</h2>
+            <p className="text-slate-400 text-lg">나의 기술 스택과 열정을 필요로 하는 팀을 발견하세요</p>
           </div>
           <Link
             href="/camp"
-            className="text-violet-400 hover:text-violet-300 text-sm font-medium flex items-center gap-1 transition-colors"
+            className="group flex items-center gap-2 text-indigo-400 font-bold text-lg hover:text-indigo-300 transition-all"
           >
-            전체 보기 →
+            모든 공고 보기
+            <span className="transform group-hover:translate-x-2 transition-transform">→</span>
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {topTeams.map((team) => (
             <div
               key={team.id}
-              className="bg-slate-800/60 border border-white/10 rounded-2xl p-5 backdrop-blur-sm hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300"
+              className="bg-slate-900/60 border border-white/10 rounded-3xl p-8 backdrop-blur-sm hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500"
             >
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between mb-6">
                 <div>
-                  <h3 className="text-white font-bold text-base">{team.name}</h3>
-                  <p className="text-xs text-violet-400 mt-0.5">{team.hackathonTitle}</p>
+                  <h3 className="text-white font-black text-xl mb-1">{team.name}</h3>
+                  <p className="text-sm text-violet-400 font-medium">{team.hackathonTitle}</p>
                 </div>
-                <span className="flex items-center gap-1 text-xs text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  모집중
-                </span>
+                <Badge variant="emerald">모집중</Badge>
               </div>
-              <p className="text-slate-400 text-sm mb-3 line-clamp-2">{team.description}</p>
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {team.requiredSkills.slice(0, 2).map((skill) => (
-                  <span key={skill} className="px-2 py-0.5 rounded-md bg-violet-500/15 text-violet-300 text-xs border border-violet-500/25">
+              <p className="text-slate-400 text-base mb-8 line-clamp-3 leading-relaxed">{team.description}</p>
+              <div className="flex flex-wrap gap-2 mb-10">
+                {team.requiredSkills.slice(0, 3).map((skill) => (
+                  <span key={skill} className="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-bold border border-indigo-500/20">
                     {skill}
                   </span>
                 ))}
               </div>
               <Link
                 href="/camp"
-                className="block text-center py-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-sm font-semibold hover:from-violet-500 hover:to-indigo-500 transition-all"
+                className="block text-center py-4 rounded-2xl bg-white/5 text-white font-bold text-sm tracking-widest hover:bg-white/10 transition-all border border-white/5"
               >
-                팀 합류 신청
+                상세 정보 및 지원
               </Link>
             </div>
           ))}
@@ -163,52 +159,47 @@ export default function HomePage() {
       </section>
 
       {/* ── 랭킹 미리보기 ── */}
-      <section className="pb-20 w-full">
-        <div className="flex items-center justify-between mb-8">
+      <section className="py-48 w-full">
+        <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 mb-16">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-1">🏆 이번 달 TOP 랭커</h2>
-            <p className="text-slate-400">해커톤을 정복한 최고의 개발자들</p>
+            <h2 className="text-5xl font-black text-white mb-4 tracking-tight italic">🏆 HALL OF FAME</h2>
+            <p className="text-slate-400 text-lg">해커톤 씬을 주도하고 있는 탑 랭커들</p>
           </div>
           <Link
             href="/rankings"
-            className="text-violet-400 hover:text-violet-300 text-sm font-medium flex items-center gap-1 transition-colors"
+            className="text-white/40 hover:text-white font-bold transition-colors"
           >
-            전체 보기 →
+            명예의 전당 보기
           </Link>
         </div>
-        <div className="bg-slate-800/40 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm">
+
+        <div className="bg-slate-900/40 border border-white/10 rounded-[40px] overflow-hidden backdrop-blur-md px-4">
           {topRankers.map((ranker, i) => {
-            const medalEmoji = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : null;
-            const badgeColors: Record<string, string> = {
-              diamond: "text-cyan-400",
-              platinum: "text-violet-400",
-              gold: "text-amber-400",
-              silver: "text-slate-300",
-              bronze: "text-amber-700",
-            };
+            const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : null;
             return (
               <div
                 key={ranker.userId}
-                className={`flex items-center gap-4 px-6 py-4 ${i < topRankers.length - 1 ? "border-b border-white/5" : ""
-                  } ${i === 0 ? "bg-gradient-to-r from-amber-500/5 to-transparent" : ""} hover:bg-white/5 transition-colors`}
+                className={`flex items-center gap-6 px-10 py-10 ${i < topRankers.length - 1 ? "border-b border-white/5" : ""} hover:bg-white/[0.03] transition-all`}
               >
-                <span className="w-8 text-center">{medalEmoji || ranker.rank}</span>
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center font-bold">{ranker.displayName.charAt(0)}</div>
+                <span className="w-12 text-3xl font-black text-slate-700 italic">{medal || ranker.rank}</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-600 to-indigo-700 flex items-center justify-center font-black text-xl text-white shadow-xl shadow-violet-500/10">
+                  {ranker.displayName.charAt(0)}
+                </div>
                 <div className="flex-1">
-                  <p className="text-white font-semibold text-sm">{ranker.displayName}</p>
-                  <p className="text-slate-500 text-xs">@{ranker.username}</p>
+                  <p className="text-white font-bold text-xl mb-1">{ranker.displayName}</p>
+                  <p className="text-slate-500 text-sm font-medium tracking-tight">@{ranker.username} • {ranker.badge.toUpperCase()}</p>
                 </div>
                 <div className="text-right">
-                  <p className={`text-sm font-bold ${badgeColors[ranker.badge]}`}>
+                  <p className="text-2xl font-black text-white tracking-tight">
                     {ranker.totalPoints.toLocaleString()}
                   </p>
-                  <p className="text-xs text-slate-500">포인트</p>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Points Scored</p>
                 </div>
               </div>
             );
           })}
         </div>
       </section>
-    </div>
+    </div >
   );
 }
