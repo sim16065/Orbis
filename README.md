@@ -1,6 +1,6 @@
-# Orbis — Premium Hackathon Platform
+# Orbis — Hackathon Platform
 
-Orbis는 개발자들이 해커톤을 탐색하고, 팀을 구성하며, 성과를 기록할 수 있는 프리미엄 플랫폼입니다.
+Orbis는 개발자들이 해커톤을 탐색하고, 팀을 구성하며, 성과를 기록할 수 있는 플랫폼입니다.
 
 ## 주요 기능
 - **해커톤 탐색**: 상세 필터링과 검색 기능
@@ -21,10 +21,6 @@ pnpm dev
 # or
 bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
