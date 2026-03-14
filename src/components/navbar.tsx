@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navItems = [
     { href: "/hackathons", label: "해커톤" },
@@ -10,81 +10,125 @@ const navItems = [
     { href: "/rankings", label: "랭킹" },
 ];
 
+interface NavLinkProps {
+    href: string;
+    label: string;
+    isActive: boolean;
+    isMobile?: boolean;
+}
+
+const NavLink = ({
+    href,
+    label,
+    isActive,
+    isMobile = false
+}: NavLinkProps) => {
+    const baseStyle = "transition-colors font-bold";
+    const desktopStyle = `text-sm ${isActive ? "text-primary" : "text-text/60 hover:text-text"}`;
+    const mobileStyle = `flex-1 flex flex-col items-center gap-1.5 py-4 text-sm ${isActive ? "text-primary" : "text-text/60"}`;
+
+    return (
+        <Link href={href} className={isMobile ? `${baseStyle} ${mobileStyle}` : `${baseStyle} ${desktopStyle}`}>
+            {label}
+        </Link>
+    );
+};
+
 export default function Navbar() {
     const pathname = usePathname();
+    const [mounted, setMounted] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+    useEffect(() => {
+        setMounted(true);
+        const saved = localStorage.getItem("theme") as "light" | "dark" ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        setTheme(saved);
+        document.documentElement.setAttribute("data-theme", saved);
+    }, []);
+
+    const toggleTheme = () => {
+        const newTheme = theme === "light" ? "dark" : "light";
+        setTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
+        document.documentElement.setAttribute("data-theme", newTheme);
+    };
+
+    // Hydration 이슈 방지: 클라이언트 마운트 전에는 아무것도 렌더링하지 않거나 플레이스홀더를 보여줍니다.
+    if (!mounted) return null;
 
     return (
         <>
-            <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-slate-900/80 backdrop-blur-xl flex justify-center">
-                <div className="w-full max-w-[1440px] px-6 h-16 flex items-center justify-between">                {/* 로고 */}
-                    {/* 로고 */}
+            <header className="fixed top-0 left-0 right-0 z-50 border-b border-text/10 bg-background/80 backdrop-blur-xl flex justify-center">
+                <div className="w-full max-w-[1440px] px-6 h-16 flex items-center justify-between">
                     <Link href="/" className="relative flex items-center group transition-transform hover:scale-105">
-                        <div className="absolute -inset-2 bg-violet-600/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute -inset-2 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         <img src="/orbislogo.png" alt="로고" className="h-7 w-auto relative z-10" />
                     </Link>
 
-                    {/* 2. 중간 여백: 이 div가 나머지 공간을 다 차지해서 메뉴를 우측으로 밀어냅니다. */}
-                    <div className="flex items-center gap-12">
-                        {/* 네비게이션 */}
+                    <div className="flex items-center gap-10">
                         <nav className="hidden md:flex items-center gap-8">
-                            {navItems.map(({ href, label }) => (
-
-                                <Link
-                                    key={href}
-                                    href={href}
-                                    className={`text-sm font-medium transition-colors ${pathname.startsWith(href) ? "text-emerald-400" : "text-slate-400 hover:text-white"
-                                        }`}
-                                >
-                                    {label}
-                                </Link>
+                            {navItems.map((item) => (
+                                <NavLink
+                                    key={item.href}
+                                    {...item}
+                                    isActive={pathname.startsWith(item.href)}
+                                />
                             ))}
                         </nav>
 
-                        {/* 우측 액션 */}
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-6">
                             {isLoggedIn ? (
-                                // 로그인 상태일 때
-                                <div className="flex items-center gap-4">                                {/* 프로필 아바타 (예시) */}
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 border border-white/10" /><button
+                                <div className="flex items-center gap-4">
+                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary border border-text/10 shadow-sm" />
+                                    <button
                                         onClick={() => setIsLoggedIn(false)}
-                                        className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
-                                    >
+                                        className="text-[12px] font-bold text-text/60 hover:text-text transition-colors bg-text/5 px-3 py-1 rounded-md"                                    >
                                         로그아웃
                                     </button>
                                 </div>
                             ) : (
-                                // 로그아웃 상태일 때
                                 <div className="flex items-center gap-4">
                                     <button
                                         onClick={() => setIsLoggedIn(true)}
-                                        className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
+                                        className="text-xs font-medium text-text/60 hover:text-text transition-colors bg-text/5 px-3 py-1 rounded-md"
                                     >
                                         로그인
                                     </button>
                                 </div>
                             )}
+
+                            <button
+                                onClick={toggleTheme}
+                                className="w-9 h-9 flex items-center justify-center rounded-xl bg-text/5 hover:bg-text/10 border border-text/10 transition-all text-text/60 hover:text-text"
+                                aria-label="테마 전환"
+                            >
+                                {theme === "light" ? (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                    </svg>
+                                ) : (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707" />
+                                    </svg>
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
             </header>
 
-            {/* 모바일 하단 네비게이션 */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 border-t border-white/10 backdrop-blur-xl">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 border-t border-text/10 backdrop-blur-xl">
                 <div className="flex">
-                    {navItems.map(({ href, label }) => {
-                        const isActive = pathname.startsWith(href);
-                        return (
-                            <Link
-                                key={href}
-                                href={href}
-                                className={`flex-1 flex flex-col items-center gap-1.5 py-4 text-sm font-bold transition-colors ${isActive ? "text-violet-400" : "text-slate-400"
-                                    }`}
-                            >
-                                {label}
-                            </Link>
-                        );
-                    })}
+                    {navItems.map((item) => (
+                        <NavLink
+                            key={item.href}
+                            {...item}
+                            isActive={pathname.startsWith(item.href)}
+                            isMobile={true}
+                        />
+                    ))}
                 </div>
             </div>
         </>

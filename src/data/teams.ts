@@ -28,7 +28,7 @@ export const teams: Team[] = [
         hackathonId: "1",
         hackathonTitle: "AI Future Hackathon 2025",
         description:
-            "AI를 활용한 의료 진단 보조 솔루션을 개발 중입니다. ML 엔지니어와 백엔드 개발자를 찾고 있어요!",
+            "AI를 활용한 의료 진단 보조 솔루션을 개발 중입니다. ML 엔지니어와 백엔드 개발자를 찾고 있어요! 더 길게 한번 만들어볼게요",
         members: [
             {
                 id: "m1",

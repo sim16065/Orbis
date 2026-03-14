@@ -1,13 +1,50 @@
 @import "tailwindcss";
 
-:root {
-  --font-outfit: "Outfit", sans-serif;
+@theme {
+  --color-text: var(--text);
+  --color-background: var(--background);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+:root {
+  --font-outfit: "Outfit", sans-serif;
+
+  /* Light Theme (User provided) */
+  --text: #050808;
+  --background: #f6f9f9;
+  --primary: #6b9f9b;
+  --secondary: #ccb1b7;
+  --accent: #b4a98b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Matching Dark Theme */
+    --text: #eef2f2;
+    --background: #0a0f0f;
+    --primary: #7bb0ac;
+    --secondary: #8a7074;
+    --accent: #9c9172;
+  }
+}
+
+/* For explicit theme switching if needed */
+[data-theme="light"] {
+  --text: #050808;
+  --background: #f6f9f9;
+  --primary: #6b9f9b;
+  --secondary: #ccb1b7;
+  --accent: #b4a98b;
+}
+
+[data-theme="dark"] {
+  --text: #eef2f2;
+  --background: #0a0f0f;
+  --primary: #7bb0ac;
+  --secondary: #8a7074;
+  --accent: #9c9172;
 }
 
 html {
@@ -16,10 +53,11 @@ html {
 
 body {
   font-family: var(--font-outfit), system-ui, sans-serif;
-  background-color: #020817;
-  color: #f8fafc;
+  background-color: var(--background);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* 스크롤바 스타일링 */
@@ -43,30 +81,22 @@ body {
 
 /* 그라데이션 텍스트 유틸리티 */
 .gradient-text {
-  background: linear-gradient(135deg, #a78bfa, #818cf8, #c084fc);
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* 글로우 효과 */
-.glow-violet {
-  box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+.glow-primary {
+  box-shadow: 0 0 40px var(--primary);
+  opacity: 0.3;
 }
 
-/* 라인 클램프 */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.text-glow-primary {
+  text-shadow: 0 0 20px var(--primary),
+    0 0 40px var(--primary);
+  opacity: 0.8;
 }
 
 /* 배경 노이즈 텍스처 */
@@ -86,6 +116,7 @@ body {
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -93,13 +124,23 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .animate-fade-in-up {
@@ -111,7 +152,18 @@ body {
 }
 
 /* 스크롤 애니메이션 딜레이 */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
