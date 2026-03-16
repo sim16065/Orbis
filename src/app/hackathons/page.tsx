@@ -6,8 +6,8 @@ import HackathonCard from "@/components/hackathon-card";
 import { useBookmarks } from "@/lib/hooks";
 
 const STATUS_OPTIONS = [
-    { value: "ongoing", label: "진행중", color: "bg-emerald-500" },
-    { value: "upcoming", label: "모집중", color: "bg-violet-500" },
+    { value: "ongoing", label: "진행중", color: "bg-violet-500" },
+    { value: "upcoming", label: "모집중", color: "bg-emerald-500" },
     { value: "ended", label: "종료", color: "bg-slate-500" },
 ];
 
