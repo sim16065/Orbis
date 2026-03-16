@@ -16,19 +16,19 @@ export function Button({
     ...props
 }: ButtonProps) {
     const base =
-        "inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+        "inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variants = {
         primary:
-            "bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-500 hover:to-indigo-500 focus:ring-violet-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40",
+            "bg-gradient-to-r from-primary to-secondary text-background hover:opacity-90 focus:ring-primary shadow-lg shadow-primary/25 hover:shadow-primary/40",
         secondary:
-            "bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm focus:ring-white/30",
+            "bg-text/5 text-text border border-text/10 hover:bg-text/10 backdrop-blur-sm focus:ring-text/30",
         ghost:
-            "text-slate-300 hover:text-white hover:bg-white/10 focus:ring-white/20",
+            "text-text/70 hover:text-text hover:bg-text/10 focus:ring-text/20",
         danger:
             "bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-500 hover:to-rose-500 focus:ring-red-500",
         outline:
-            "border border-violet-500 text-violet-400 hover:bg-violet-500/10 focus:ring-violet-500",
+            "border border-primary text-primary hover:bg-primary/10 focus:ring-primary",
     };
 
     const sizes = {
@@ -71,28 +71,32 @@ export function Button({
 
 interface BadgeProps {
     children: React.ReactNode;
-    variant?: "violet" | "emerald" | "amber" | "rose" | "sky" | "slate";
+    variant?: "violet" | "emerald" | "amber" | "rose" | "sky" | "slate" | "primary" | "secondary" | "accent";
     className?: string;
 }
 
 export function Badge({
     children,
-    variant = "violet",
+    variant = "primary",
     className = "",
 }: BadgeProps) {
-    const variants = {
-        violet: "bg-violet-500/20 text-violet-300 border border-violet-500/30",
-        emerald: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
-        amber: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
-        rose: "bg-rose-500/20 text-rose-300 border border-rose-500/30",
-        sky: "bg-sky-500/20 text-sky-300 border border-sky-500/30",
-        slate: "bg-slate-500/20 text-slate-300 border border-slate-500/30",
+    const variants: Record<string, string> = {
+        // Semantic overrides for legacy variants to fit the current theme
+        violet: "bg-violet-500/10 text-violet-400 border border-violet-500/30 shadow-[0_0_10px_rgba(139,92,246,0.1)]",
+        emerald: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
+        amber: "bg-amber-500/10 text-amber-400 border border-amber-500/30",
+        sky: "bg-sky-500/10 text-sky-400 border border-sky-500/30",
+        rose: "bg-rose-500/10 text-rose-400 border border-rose-500/30",
+        slate: "bg-text/5 text-text/50 border border-text/10 opacity-70",
+        // Direct semantic variants
+        primary: "bg-primary/15 text-text font-bold border border-primary/30",
+        secondary: "bg-secondary/15 text-text font-bold border border-secondary/30",
+        accent: "bg-accent/15 text-text font-bold border border-accent/30",
     };
 
+
     return (
-        <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${variants[variant]} ${className}`}
-        >
+        <span className={`inline-flex items-center ${variants[variant] || variants.primary} ${className}`}>
             {children}
         </span>
     );
@@ -107,12 +111,13 @@ interface CardProps {
 export function Card({ children, className = "", hover = false }: CardProps) {
     return (
         <div
-            className={`bg-slate-800/60 border border-white/10 rounded-2xl backdrop-blur-sm ${hover
-                    ? "transition-all duration-300 hover:border-violet-500/40 hover:shadow-lg hover:shadow-violet-500/10 hover:-translate-y-1"
-                    : ""
+            className={`bg-text/[0.03] border border-text/10 rounded-2xl backdrop-blur-sm ${hover
+                ? "transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+                : ""
                 } ${className}`}
         >
             {children}
         </div>
     );
 }
+
