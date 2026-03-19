@@ -1,3 +1,16 @@
+export interface SubmissionItem {
+    title: string;
+    required: boolean;
+    description: string;
+    caption?: string;
+    icon?: "code" | "shield" | "video" | "file";
+}
+
+export interface HackathonSubmission {
+    items: SubmissionItem[];
+    notices: string[];
+}
+
 export interface Hackathon {
     id: string;
     slug: string;
@@ -15,8 +28,9 @@ export interface Hackathon {
     registrationDeadline: string;
     status: "upcoming" | "ongoing" | "ended";
     mode: "online" | "offline" | "hybrid";
-    imageUrl: string,
+    imageUrl: string;
     location?: string;
+    submission: HackathonSubmission;
 }
 
 export const hackathons: Hackathon[] = [
@@ -40,6 +54,35 @@ export const hackathons: Hackathon[] = [
         mode: "hybrid",
         imageUrl: "/hackathon.jpg",
         location: "서울 코엑스",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "GitHub 또는 GitLab 저장소 링크를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "모델 설명 문서",
+                    required: true,
+                    description: "사용한 모델 구조, 학습 방식, 추론 흐름을 문서로 정리해주세요.",
+                    icon: "file",
+                },
+                {
+                    title: "데모 영상",
+                    required: true,
+                    description: "3분 이내의 시연 영상 링크를 제출해주세요.",
+                    caption: "YouTube, Vimeo 등 외부 링크 가능",
+                    icon: "video",
+                },
+            ],
+            notices: [
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+                "README에 실행 방법과 의존성 설치 방법을 포함해주세요.",
+                "모델 추론에 필요한 환경 정보와 버전을 명시해주세요.",
+                "제출 링크는 심사위원이 접근 가능한 상태인지 확인해주세요.",
+            ],
+        },
     },
     {
         id: "2",
@@ -60,6 +103,34 @@ export const hackathons: Hackathon[] = [
         status: "ongoing",
         mode: "online",
         imageUrl: "/hackathon.jpg",
+        submission: {
+            items: [
+                {
+                    title: "스마트 컨트랙트 소스코드",
+                    required: true,
+                    description: "배포한 컨트랙트와 저장소 링크를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "배포 주소 및 테스트넷 정보",
+                    required: true,
+                    description: "컨트랙트 주소, 체인 정보, 테스트 계정을 함께 제출해주세요.",
+                    icon: "file",
+                },
+                {
+                    title: "데모 영상",
+                    required: true,
+                    description: "dApp 사용 흐름이 보이는 3분 이내 데모 영상을 제출해주세요.",
+                    icon: "video",
+                },
+            ],
+            notices: [
+                "스마트 컨트랙트 주소와 ABI 정보를 함께 기재해주세요.",
+                "테스트에 필요한 지갑 주소 또는 샘플 계정을 제공해주세요.",
+                "외부 API 키가 필요한 경우 대체 테스트 방법을 README에 작성해주세요.",
+                "제출 링크는 공개 또는 열람 가능한 상태여야 합니다.",
+            ],
+        },
     },
     {
         id: "3",
@@ -81,6 +152,33 @@ export const hackathons: Hackathon[] = [
         mode: "offline",
         imageUrl: "/poster.jpg",
         location: "부산 벡스코",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "서비스 및 디바이스 제어 코드 저장소를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "환경 효과 설명서",
+                    required: true,
+                    description: "탄소 절감, 자원 절약 등 기대 효과를 문서로 제출해주세요.",
+                    icon: "file",
+                },
+                {
+                    title: "발표 자료",
+                    required: true,
+                    description: "최종 발표용 PDF 자료를 제출해주세요.",
+                    icon: "file",
+                },
+            ],
+            notices: [
+                "IoT 디바이스가 포함된 경우 연결 구조를 다이어그램으로 설명해주세요.",
+                "데이터 수집 방식과 측정 기준을 문서에 포함해주세요.",
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
     },
     {
         id: "4",
@@ -102,6 +200,41 @@ export const hackathons: Hackathon[] = [
         mode: "hybrid",
         imageUrl: "/poster.jpg",
         location: "서울 강남",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "애플리케이션 또는 서비스 저장소 링크를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "의료 데이터 처리 방안",
+                    required: true,
+                    description: "데이터 수집, 활용, 비식별화 및 보안 처리 방안을 문서로 제출해주세요.",
+                    icon: "shield",
+                },
+                {
+                    title: "데모 영상",
+                    required: true,
+                    description: "3분 이내의 데모 영상 링크를 제출해주세요.",
+                    caption: "YouTube, Vimeo 등 외부 링크 제출 가능",
+                    icon: "video",
+                },
+                {
+                    title: "임상 시험 계획서",
+                    required: false,
+                    description: "해당하는 경우 참고 자료로 추가 제출할 수 있습니다.",
+                    icon: "file",
+                },
+            ],
+            notices: [
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+                "프로젝트 실행 방법은 README.md에 포함해주세요.",
+                "제출 링크는 열람 가능한 상태인지 확인해주세요.",
+                "영상 링크는 재생 가능 여부를 반드시 확인해주세요.",
+            ],
+        },
     },
     {
         id: "5",
@@ -122,6 +255,33 @@ export const hackathons: Hackathon[] = [
         status: "upcoming",
         mode: "online",
         imageUrl: "/hackathon.jpg",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "서비스 구현 코드와 저장소 링크를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "서비스 기획서",
+                    required: true,
+                    description: "문제 정의, 타깃 사용자, 수익 모델을 포함한 기획서를 제출해주세요.",
+                    icon: "file",
+                },
+                {
+                    title: "시연 영상",
+                    required: true,
+                    description: "핵심 기능이 보이는 3분 이내 시연 영상을 제출해주세요.",
+                    icon: "video",
+                },
+            ],
+            notices: [
+                "금융 데이터 사용 시 출처와 처리 방식을 명시해주세요.",
+                "테스트 계정이 필요한 경우 샘플 계정을 함께 제출해주세요.",
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
     },
     {
         id: "6",
@@ -142,6 +302,33 @@ export const hackathons: Hackathon[] = [
         status: "upcoming",
         mode: "online",
         imageUrl: "/hackathon.jpg",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "웹 또는 앱 서비스 저장소 링크를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "데모 영상",
+                    required: true,
+                    description: "주요 학습 흐름을 보여주는 데모 영상을 제출해주세요.",
+                    icon: "video",
+                },
+                {
+                    title: "접근성 고려 문서",
+                    required: false,
+                    description: "접근성 설계 및 배려 요소를 정리한 문서를 추가 제출할 수 있습니다.",
+                    icon: "file",
+                },
+            ],
+            notices: [
+                "교육 대상 사용자 시나리오를 README 또는 발표 자료에 포함해주세요.",
+                "모바일 앱인 경우 설치 방법을 명확히 안내해주세요.",
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
     },
     {
         id: "7",
@@ -163,6 +350,33 @@ export const hackathons: Hackathon[] = [
         mode: "offline",
         imageUrl: "/hackathon.jpg",
         location: "서울 국방컨벤션",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "보안 솔루션 구현 코드와 저장소 링크를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "위협 모델 문서",
+                    required: true,
+                    description: "가정한 공격 시나리오와 방어 전략을 문서로 정리해주세요.",
+                    icon: "shield",
+                },
+                {
+                    title: "시연 영상",
+                    required: true,
+                    description: "탐지 또는 방어 흐름을 보여주는 데모 영상을 제출해주세요.",
+                    icon: "video",
+                },
+            ],
+            notices: [
+                "실행에 필요한 네트워크 환경과 포트를 README에 명시해주세요.",
+                "민감한 자격 증명은 저장소에 포함하지 마세요.",
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
     },
     {
         id: "8",
@@ -184,6 +398,33 @@ export const hackathons: Hackathon[] = [
         mode: "hybrid",
         imageUrl: "/hackathon.jpg",
         location: "경기 현대차 연수원",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "서비스 또는 시뮬레이션 코드 저장소를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "서비스 시나리오 문서",
+                    required: true,
+                    description: "이동 시나리오, 사용자 흐름, 적용 도시 환경을 설명해주세요.",
+                    icon: "file",
+                },
+                {
+                    title: "데모 영상",
+                    required: true,
+                    description: "핵심 이동 경험이 보이는 3분 이내 영상을 제출해주세요.",
+                    icon: "video",
+                },
+            ],
+            notices: [
+                "지도 API나 차량 API 사용 시 의존성을 명시해주세요.",
+                "시뮬레이션 기반 결과물도 제출 가능합니다.",
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
     },
     {
         id: "9",
@@ -204,6 +445,33 @@ export const hackathons: Hackathon[] = [
         status: "upcoming",
         mode: "online",
         imageUrl: "/hackathon.jpg",
+        submission: {
+            items: [
+                {
+                    title: "프로젝트 소스코드",
+                    required: true,
+                    description: "데이터 처리 및 서비스 구현 코드 저장소를 제출해주세요.",
+                    icon: "code",
+                },
+                {
+                    title: "데이터 활용 설명서",
+                    required: true,
+                    description: "사용한 위성 데이터와 처리 방식을 문서로 설명해주세요.",
+                    icon: "file",
+                },
+                {
+                    title: "시연 영상",
+                    required: true,
+                    description: "데이터 시각화 또는 분석 결과가 보이는 데모 영상을 제출해주세요.",
+                    icon: "video",
+                },
+            ],
+            notices: [
+                "사용한 공개 데이터셋과 출처를 명시해주세요.",
+                "재현 가능한 실행 방법을 README에 작성해주세요.",
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
     },
     {
         id: "10",
@@ -225,5 +493,32 @@ export const hackathons: Hackathon[] = [
         mode: "offline",
         imageUrl: "/hackathon.jpg",
         location: "판교 경기창조경제혁신센터",
+        submission: {
+            items: [
+                {
+                    title: "게임 빌드 파일",
+                    required: true,
+                    description: "실행 가능한 빌드 파일 또는 다운로드 링크를 제출해주세요.",
+                    icon: "file",
+                },
+                {
+                    title: "프로젝트 소스코드",
+                    required: false,
+                    description: "심사용으로 소스코드 저장소를 추가 제출할 수 있습니다.",
+                    icon: "code",
+                },
+                {
+                    title: "플레이 영상",
+                    required: true,
+                    description: "핵심 플레이 장면이 담긴 시연 영상을 제출해주세요.",
+                    icon: "video",
+                },
+            ],
+            notices: [
+                "실행 환경과 조작 방법을 README에 포함해주세요.",
+                "압축 파일 제출 시 실행 파일 위치를 명확히 표시해주세요.",
+                "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
     },
 ];
