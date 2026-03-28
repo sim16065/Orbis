@@ -18,13 +18,9 @@ const SORT_OPTIONS = [
     { value: "prize", label: "상금 높은 순" },
 ];
 
-// 전체 태그 추출
-const allTags = Array.from(new Set(hackathons.flatMap((h) => h.tags)));
-
 export default function HackathonsPage() {
     const [search, setSearch] = useState("");
     const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [sortBy, setSortBy] = useState("recent");
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const { isBookmarked, toggleBookmark } = useBookmarks();
@@ -34,7 +30,6 @@ export default function HackathonsPage() {
     const resetFilters = () => {
         setSearch("");
         setSelectedStatuses([]);
-        setSelectedTags([]);
     };
 
     const filtered = useMemo(() => {
@@ -42,13 +37,11 @@ export default function HackathonsPage() {
             const matchSearch =
                 !search ||
                 h.title.toLowerCase().includes(search.toLowerCase()) ||
-                h.organizer.toLowerCase().includes(search.toLowerCase()) ||
-                h.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
+                h.organizer.toLowerCase().includes(search.toLowerCase());
 
             const matchStatus = selectedStatuses.length === 0 || selectedStatuses.includes(h.status);
-            const matchTags = selectedTags.length === 0 || selectedTags.some(t => h.tags.includes(t));
 
-            return matchSearch && matchStatus && matchTags;
+            return matchSearch && matchStatus;
         });
 
         result = [...result].sort((a, b) => {
@@ -67,7 +60,7 @@ export default function HackathonsPage() {
         });
 
         return result;
-    }, [search, selectedStatuses, selectedTags, sortBy]);
+    }, [search, selectedStatuses, sortBy]);
 
     return (
         <div className="min-h-screen px-4 sm:px-6 py-10 bg-background text-text">
@@ -81,9 +74,9 @@ export default function HackathonsPage() {
                         className="w-full lg:hidden flex items-center justify-between p-5 bg-text/[0.03] border border-text/10 rounded-2xl mb-4 transition-all active:scale-[0.98]">
                         <div className="flex items-center gap-3">
                             <span className="font-bold text-sm tracking-tight">상세 필터 설정</span>
-                            {(selectedStatuses.length > 0 || selectedTags.length > 0) && (
+                            {(selectedStatuses.length > 0) && (
                                 <span className="bg-primary text-background text-[10px] px-1.5 py-0.5 rounded-full font-black">
-                                    {selectedStatuses.length + selectedTags.length}
+                                    {selectedStatuses.length}
                                 </span>
                             )}
                         </div>
@@ -136,31 +129,6 @@ export default function HackathonsPage() {
                                             </span>
                                         </label>
                                     ))}
-                                </div>
-                            </div>
-
-                            {/* 태그 필터 */}
-                            <div>
-                                <h4 className="font-bold text-sm mb-4">태그</h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {allTags.map(tag => {
-                                        const isSelected = selectedTags.includes(tag);
-                                        return (
-                                            <button
-                                                key={tag}
-                                                onClick={() => {
-                                                    if (isSelected) setSelectedTags(selectedTags.filter(t => t !== tag));
-                                                    else setSelectedTags([...selectedTags, tag]);
-                                                }}
-                                                className={`px-3 py-1.5 rounded-full text-[11px] font-bold transition-all ${isSelected
-                                                    ? 'bg-primary text-background shadow-md shadow-primary/20 scale-[1.02]'
-                                                    : 'bg-text/5 text-text/60 hover:bg-text/10 hover:text-text'
-                                                    }`}
-                                            >
-                                                {tag}
-                                            </button>
-                                        );
-                                    })}
                                 </div>
                             </div>
                         </div>

@@ -124,17 +124,8 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
                             <span className="w-1.5 h-6 bg-primary rounded-full" />
                             개요
                         </h2>
-                        <div className="prose prose-invert max-w-none text-text/70 leading-relaxed text-lg bg-text/[0.02] border border-text/5 p-6 rounded-2xl">
+                        <div className="prose prose-invert max-w-none text-text/70 leading-relaxed text-[16px] bg-text/[0.02] border border-text/5 p-6 rounded-2xl">
                             <p className="whitespace-pre-wrap">{hackathon.longDescription}</p>
-
-                            <h3 className="text-text/90 font-bold mt-8 mb-4">기술 스택</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {hackathon.tags.map((tag) => (
-                                    <span key={tag} className="px-3 py-1.5 rounded-lg bg-text/5 border border-text/10 font-medium text-sm text-text/80">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
                         </div>
                     </section>
 
