@@ -14,7 +14,7 @@ export function TeamsSection({ teams }: TeamsSectionProps) {
                     <span className="w-1.5 h-6 bg-sky-500 rounded-full" />
                     참가 팀 정보 ({teams.length})
                 </h2>
-                <Link href="/camp" className="text-primary text-sm hover:underline font-bold">크루징 게시판으로 &rarr;</Link>
+                <Link href="/camp" className="text-primary text-sm hover:underline font-bold">팀 찾기 &rarr;</Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -11,6 +11,16 @@ export interface HackathonSubmission {
     notices: string[];
 }
 
+export interface EvaluationCriterion {
+    title: string;
+    weight: number;
+}
+
+export interface HackathonEvaluation {
+    method?: string;
+    criteria: EvaluationCriterion[];
+}
+
 export interface Hackathon {
     id: string;
     slug: string;
@@ -31,6 +41,7 @@ export interface Hackathon {
     imageUrl: string;
     location?: string;
     submission: HackathonSubmission;
+    evaluation: HackathonEvaluation;
 }
 
 export const hackathons: Hackathon[] = [
@@ -83,6 +94,16 @@ export const hackathons: Hackathon[] = [
                 "제출 링크는 심사위원이 접근 가능한 상태인지 확인해주세요.",
             ],
         },
+        evaluation: {
+            method: "각 팀은 5분 발표 후 3분 Q&A를 진행합니다.",
+            criteria: [
+                { title: "문제 해결력", weight: 25 },
+                { title: "기술 구현", weight: 30 },
+                { title: "AI 활용도", weight: 25 },
+                { title: "확장 가능성", weight: 10 },
+                { title: "발표력", weight: 10 },
+            ],
+        },
     },
     {
         id: "2",
@@ -131,6 +152,16 @@ export const hackathons: Hackathon[] = [
                 "제출 링크는 공개 또는 열람 가능한 상태여야 합니다.",
             ],
         },
+        evaluation: {
+            method: "각 팀은 6분 발표 후 라이브 데모와 Q&A를 진행합니다.",
+            criteria: [
+                { title: "프로토콜 완성도", weight: 25 },
+                { title: "스마트 컨트랙트 구현", weight: 25 },
+                { title: "실사용 가능성", weight: 20 },
+                { title: "탈중앙화 적합성", weight: 20 },
+                { title: "데모 완성도", weight: 10 },
+            ],
+        },
     },
     {
         id: "3",
@@ -177,6 +208,16 @@ export const hackathons: Hackathon[] = [
                 "IoT 디바이스가 포함된 경우 연결 구조를 다이어그램으로 설명해주세요.",
                 "데이터 수집 방식과 측정 기준을 문서에 포함해주세요.",
                 "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
+        evaluation: {
+            method: "각 팀은 5분 발표 후 2분 질의응답을 진행합니다.",
+            criteria: [
+                { title: "환경 기여도", weight: 30 },
+                { title: "실현 가능성", weight: 20 },
+                { title: "기술 활용도", weight: 20 },
+                { title: "지속 가능성", weight: 20 },
+                { title: "발표력", weight: 10 },
             ],
         },
     },
@@ -235,6 +276,16 @@ export const hackathons: Hackathon[] = [
                 "영상 링크는 재생 가능 여부를 반드시 확인해주세요.",
             ],
         },
+        evaluation: {
+            method: "각 팀은 7분 발표 후 전문가 패널 Q&A를 진행합니다.",
+            criteria: [
+                { title: "의료 문제 적합성", weight: 25 },
+                { title: "기술 구현", weight: 20 },
+                { title: "데이터 보안 및 윤리", weight: 25 },
+                { title: "현장 적용 가능성", weight: 20 },
+                { title: "발표력", weight: 10 },
+            ],
+        },
     },
     {
         id: "5",
@@ -282,6 +333,16 @@ export const hackathons: Hackathon[] = [
                 "발표 자료는 PDF 형식으로 제출해주세요.",
             ],
         },
+        evaluation: {
+            method: "각 팀은 5분 발표와 3분 데모를 포함해 심사를 진행합니다.",
+            criteria: [
+                { title: "문제 해결력", weight: 20 },
+                { title: "비즈니스 가능성", weight: 25 },
+                { title: "기술 완성도", weight: 20 },
+                { title: "사용자 경험", weight: 20 },
+                { title: "발표력", weight: 15 },
+            ],
+        },
     },
     {
         id: "6",
@@ -327,6 +388,16 @@ export const hackathons: Hackathon[] = [
                 "교육 대상 사용자 시나리오를 README 또는 발표 자료에 포함해주세요.",
                 "모바일 앱인 경우 설치 방법을 명확히 안내해주세요.",
                 "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
+        evaluation: {
+            method: "각 팀은 5분 발표 후 심사위원 Q&A를 진행합니다.",
+            criteria: [
+                { title: "교육 효과성", weight: 30 },
+                { title: "접근성", weight: 20 },
+                { title: "사용자 경험", weight: 20 },
+                { title: "기술 구현", weight: 15 },
+                { title: "창의성", weight: 15 },
             ],
         },
     },
@@ -377,6 +448,16 @@ export const hackathons: Hackathon[] = [
                 "발표 자료는 PDF 형식으로 제출해주세요.",
             ],
         },
+        evaluation: {
+            method: "각 팀은 6분 발표 후 공격 시나리오 기반 질의응답을 진행합니다.",
+            criteria: [
+                { title: "보안 효과성", weight: 30 },
+                { title: "위협 대응 전략", weight: 25 },
+                { title: "기술 구현", weight: 20 },
+                { title: "실전 적용성", weight: 15 },
+                { title: "발표력", weight: 10 },
+            ],
+        },
     },
     {
         id: "8",
@@ -423,6 +504,16 @@ export const hackathons: Hackathon[] = [
                 "지도 API나 차량 API 사용 시 의존성을 명시해주세요.",
                 "시뮬레이션 기반 결과물도 제출 가능합니다.",
                 "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
+        evaluation: {
+            method: "각 팀은 5분 발표와 3분 서비스 시연으로 심사를 진행합니다.",
+            criteria: [
+                { title: "이동 경험 혁신성", weight: 25 },
+                { title: "기술 구현", weight: 25 },
+                { title: "안전성", weight: 20 },
+                { title: "도시 적용 가능성", weight: 20 },
+                { title: "발표 및 데모", weight: 10 },
             ],
         },
     },
@@ -472,6 +563,16 @@ export const hackathons: Hackathon[] = [
                 "발표 자료는 PDF 형식으로 제출해주세요.",
             ],
         },
+        evaluation: {
+            method: "각 팀은 6분 발표 후 데이터 활용 방식 중심의 Q&A를 진행합니다.",
+            criteria: [
+                { title: "데이터 활용도", weight: 30 },
+                { title: "분석 정확성", weight: 20 },
+                { title: "문제 해결력", weight: 20 },
+                { title: "시각화 및 전달력", weight: 15 },
+                { title: "확장 가능성", weight: 15 },
+            ],
+        },
     },
     {
         id: "10",
@@ -518,6 +619,16 @@ export const hackathons: Hackathon[] = [
                 "실행 환경과 조작 방법을 README에 포함해주세요.",
                 "압축 파일 제출 시 실행 파일 위치를 명확히 표시해주세요.",
                 "발표 자료는 PDF 형식으로 제출해주세요.",
+            ],
+        },
+        evaluation: {
+            method: "각 팀은 5분 플레이 시연 후 3분 질의응답을 진행합니다.",
+            criteria: [
+                { title: "게임성", weight: 30 },
+                { title: "창의성", weight: 25 },
+                { title: "완성도", weight: 20 },
+                { title: "아트 및 사운드", weight: 15 },
+                { title: "발표 및 시연", weight: 10 },
             ],
         },
     },

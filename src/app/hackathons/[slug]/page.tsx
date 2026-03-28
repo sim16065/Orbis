@@ -6,8 +6,8 @@ import { notFound } from "next/navigation";
 import { hackathons } from "@/data/hackathons";
 import { teams } from "@/data/teams";
 import { Badge, Button, Card } from "@/components/ui";
-import { useBookmarks } from "@/lib/hooks";
-import { FileText, Award, CalendarDays, Trophy, Users, CheckCircle, Table } from "lucide-react";
+import { useBookmarks, useTeamApplications } from "@/lib/hooks";
+import { FileText, Award, CalendarDays, Trophy, Users, CheckCircle, Table, ChevronLeft } from "lucide-react";
 import { SubmissionSection } from "@/components/hackathon-detail/SubmissionSection";
 import { ScheduleSection } from "@/components/hackathon-detail/ScheduleSection";
 import { PrizeSection } from "@/components/hackathon-detail/PrizeSection";
@@ -29,6 +29,7 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
     const { slug } = use(params);
     const hackathon = hackathons.find((h) => h.slug === slug);
     const { isBookmarked, toggleBookmark } = useBookmarks();
+    const { appliedTeams } = useTeamApplications();
 
     const [activeSection, setActiveSection] = useState("overview");
 
@@ -68,22 +69,27 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
                     style={{ backgroundImage: `url(${hackathon.imageUrl || 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1000'})` }}
                 />
 
-                <div className="relative z-20 max-w-7xl mx-auto px-6 h-full flex flex-col justify-end pb-10">
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        <Badge variant="violet">{hackathon.status === 'upcoming' ? '모집중' : hackathon.status === 'ongoing' ? '진행중' : '종료'}</Badge>
-                        <Badge variant="sky">{hackathon.mode === 'online' ? '온라인' : hackathon.mode === 'offline' ? '오프라인' : '하이브리드'}</Badge>
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">
-                        {hackathon.title}
-                    </h1>
-                    <div className="flex items-center gap-4 text-text/70">
-                        <span className="flex items-center gap-1.5">
-                            <span className="text-primary font-bold">주최</span> {hackathon.organizer}
-                        </span>
-                        <span className="text-text/40">|</span>
-                        <span className="flex items-center gap-1.5">
-                            <span className="text-primary font-bold">상금</span> {hackathon.prize}
-                        </span>
+                <div className="relative z-20 max-w-7xl mx-auto px-6 h-full flex flex-col pt-8 pb-10">
+                    {/* 중앙 여백을 밀어내어 타이틀을 하단에 고정 */}
+                    <div className="flex-1" />
+
+                    <div>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            <Badge variant="violet">{hackathon.status === 'upcoming' ? '모집중' : hackathon.status === 'ongoing' ? '진행중' : '종료'}</Badge>
+                            <Badge variant="sky">{hackathon.mode === 'online' ? '온라인' : hackathon.mode === 'offline' ? '오프라인' : '하이브리드'}</Badge>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">
+                            {hackathon.title}
+                        </h1>
+                        <div className="flex items-center gap-4 text-text/70">
+                            <span className="flex items-center gap-1.5">
+                                <span className="text-primary font-bold">주최</span> {hackathon.organizer}
+                            </span>
+                            <span className="text-text/40">|</span>
+                            <span className="flex items-center gap-1.5">
+                                <span className="text-primary font-bold">상금</span> {hackathon.prize}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -132,7 +138,7 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
                         </div>
                     </section>
 
-                    <EvaluationSection />
+                    <EvaluationSection evaluation={hackathon.evaluation} />
                     <ScheduleSection
                         registrationDeadline={hackathon.registrationDeadline}
                         startDate={hackathon.startDate}
@@ -149,8 +155,8 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
                 </div>
 
                 {/* 사이드바 정보 */}
-                <div className="space-y-6">
-                    <Card className="p-6 sticky top-24">
+                <div className="space-y-6 sticky top-24 h-[calc(100vh-8rem)] min-h-[500px] pb-10 overflow-y-auto hide-scrollbar">
+                    <Card className="p-6">
                         <div className="space-y-6">
                             <div>
                                 <p className="text-xs text-text/50 uppercase tracking-wider font-bold mb-1">참가비</p>
@@ -196,15 +202,44 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
                         </div>
                     </Card>
 
-                    <Card className="p-6 bg-gradient-to-br from-secondary/10 to-primary/10 border-primary/20">
-                        <h3 className="font-bold mb-2">팀이 없으신가요?</h3>
-                        <p className="text-sm text-text/60 mb-4">
-                            참가하고 싶지만 팀원이 없다면, 팀 빌딩 게시판에서 함께할 동료를 찾아보세요.
-                        </p>
-                        <Link href="/camp">
-                            <Button variant="ghost" className="w-full bg-background/50 hover:bg-background/80 text-text">팀원 찾으러 가기</Button>
-                        </Link>
-                    </Card>
+                    {(() => {
+                        // 실제 유저가 지원한 팀 목록 중, 현재 해커톤에 속한 팀 수색
+                        const myTeamData = relatedTeams.find((t) => appliedTeams.includes(t.id));
+                        const hasTeam = !!myTeamData;
+
+                        if (hasTeam) {
+                            return (
+                                <Card className="p-6 bg-text/[0.03] border-text/10 shadow-sm relative overflow-hidden group">
+                                    <h3 className="font-bold mb-2 text-[16px] flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-primary ring-2 ring-primary/20" />
+                                        나의 팀: {myTeamData.name}
+                                    </h3>
+                                    <p className="text-sm text-text/60 mb-5 font-medium">
+                                        멤버: 나 외 {myTeamData.members.length - 1}명
+                                    </p>
+                                    <Link href={`/camp/team/${myTeamData.id}`}>
+                                        <Button className="w-full bg-primary/10 hover:bg-primary/20 text-  border border-primary/20 font-bold transition-all group-hover:bg-primary group-hover:text-background">
+                                            내 팀 상세페이지로 이동
+                                        </Button>
+                                    </Link>
+                                </Card>
+                            );
+                        }
+
+                        return (
+                            <Card className="p-6 bg-gradient-to-br from-secondary/10 to-primary/10 border-primary/20 shadow-sm">
+                                <h3 className="font-bold mb-2 text-[16px]">팀이 없으신가요?</h3>
+                                <p className="text-sm text-text/60 mb-5">
+                                    참가하고 싶지만 팀원이 없다면, 팀 빌딩 게시판에서 함께할 동료를 찾아보세요.
+                                </p>
+                                <Link href="/camp">
+                                    <Button variant="ghost" className="w-full bg-background/50 border border-text/5 hover:bg-background/80 text-text font-bold shadow-sm">
+                                        팀원 찾으러 가기
+                                    </Button>
+                                </Link>
+                            </Card>
+                        );
+                    })()}
                 </div>
             </div>
         </div >
