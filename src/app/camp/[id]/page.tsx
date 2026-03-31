@@ -6,6 +6,7 @@ import { teams } from "@/data/teams";
 import { hackathons } from "@/data/hackathons";
 import Link from "next/link";
 import { useTeamApplications } from "@/lib/hooks";
+import { ROLE_LABELS } from "@/data/roles";
 import { Button } from "@/components/ui";
 
 export default function TeamDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -69,15 +70,26 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
                         {/* 1. 우리가 찾는 포지션 */}
                         <section className="bg-text/[0.02] border border-text/10 rounded-3xl p-8">
                             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                                🎯 모집 포지션 및 필수 스킬
+                                🎯 모집 포지션
                             </h2>
-                            {team.requiredSkills.length > 0 ? (
-                                <div className="flex flex-wrap gap-2">
-                                    {team.requiredSkills.map(skill => (
-                                        <span key={skill} className="px-5 py-2.5 rounded-xl text-sm font-bold bg-primary/10 text-primary border border-primary/20 shadow-sm">
-                                            {skill}
-                                        </span>
-                                    ))}
+                            {team.requiredRoles.length > 0 || team.requiredSkills.length > 0 ? (
+                                <div className="space-y-4">
+                                    <div className="flex flex-wrap gap-2">
+                                        {team.requiredRoles.map(roleId => (
+                                            <span key={roleId} className="px-5 py-2.5 rounded-xl text-sm font-bold bg-primary text-background shadow-sm">
+                                                {ROLE_LABELS[roleId]}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    {team.requiredSkills.length > 0 && (
+                                        <div className="flex flex-wrap gap-2 pt-2 border-t border-text/5">
+                                            {team.requiredSkills.map(skill => (
+                                                <span key={skill} className="px-3 py-1.5 rounded-lg text-xs font-bold bg-text/5 text-text/60 border border-text/10">
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             ) : (
                                 <p className="text-text/50 font-medium">현재 정해진 필수 요건은 없습니다. 열정만 있다면 편하게 지원해 주세요!</p>

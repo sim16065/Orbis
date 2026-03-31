@@ -1,55 +1,102 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { teams } from "@/data/teams";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { teams, Team } from "@/data/teams";
 import TeamCard from "@/components/team-card";
 import { useTeamApplications } from "@/lib/hooks";
 import { hackathons } from "@/data/hackathons";
+import { RoleId } from "@/data/roles";
+import { FilterPopover } from "@/components/filter-popover";
 
-const ROLES = [
-    { label: "프론트엔드", keywords: ["frontend", "react", "vue"] },
-    { label: "백엔드", keywords: ["backend", "node", "python", "java", "go", "spring"] },
-    { label: "모바일", keywords: ["mobile", "ios", "android", "flutter", "swift"] },
-    { label: "디자이너", keywords: ["design", "ux", "ui"] },
-    { label: "기획자", keywords: ["pm", "product", "manager"] },
-    { label: "AI/ML", keywords: ["ml", "ai", "data", "deep"] },
-    { label: "블록체인", keywords: ["solidity", "blockchain", "web3"] },
-];
+function getFilteredTeams(
+    teamsData: Team[],
+    search: string,
+    selectedRoles: RoleId[],
+    selectedSkills: string[],
+    selectedHackathon: string,
+    isRecruitingOnly: boolean
+) {
+    return teamsData.filter(team => {
+        const matchesSearch =
+            team.name.toLowerCase().includes(search.toLowerCase()) ||
+            team.hackathonTitle.toLowerCase().includes(search.toLowerCase()) ||
+            team.description.toLowerCase().includes(search.toLowerCase());
+
+        const matchesRoles =
+            selectedRoles.length === 0 ||
+            selectedRoles.some(roleId => team.requiredRoles.includes(roleId));
+
+        const matchesSkills =
+            selectedSkills.length === 0 ||
+            selectedSkills.some(skill =>
+                team.requiredSkills.some(rs => rs.toLowerCase().includes(skill.toLowerCase())) ||
+                team.members.some(m => m.skills.some(ms => ms.toLowerCase().includes(skill.toLowerCase())))
+            );
+
+        const matchesHackathon =
+            selectedHackathon === "all" || team.hackathonId === selectedHackathon;
+
+        const matchesStatus =
+            !isRecruitingOnly || team.isRecruiting;
+
+        return matchesSearch && matchesRoles && matchesSkills && matchesHackathon && matchesStatus;
+    });
+}
 
 export default function CampPage() {
     const [search, setSearch] = useState("");
-    const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+    const [selectedRoles, setSelectedRoles] = useState<RoleId[]>([]);
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
     const [selectedHackathon, setSelectedHackathon] = useState("all");
+    const [isRecruitingOnly, setIsRecruitingOnly] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
     const { isApplied, applyToTeam } = useTeamApplications();
+    const filterRef = useRef<HTMLDivElement>(null);
 
-    const toggleRole = (roleLabel: string) => {
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+                setIsFilterOpen(false);
+            }
+        };
+
+        if (isFilterOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isFilterOpen]);
+
+    const toggleRole = (roleId: RoleId) => {
         setSelectedRoles(prev =>
-            prev.includes(roleLabel) ? prev.filter(r => r !== roleLabel) : [...prev, roleLabel]
+            prev.includes(roleId) ? prev.filter(r => r !== roleId) : [...prev, roleId]
+        );
+        // 직무 해제 시, 해당 직무의 스킬들도 초기화하는 등 고도화 가능
+    };
+
+    const toggleSkill = (skill: string) => {
+        setSelectedSkills(prev =>
+            prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
         );
     };
 
+    const activeFilterCount =
+        (selectedRoles.length > 0 ? 1 : 0) +
+        (selectedSkills.length > 0 ? 1 : 0) +
+        (isRecruitingOnly ? 1 : 0);
+    const hasActiveFilters = activeFilterCount > 0;
+
+    const resetFilters = () => {
+        setSelectedRoles([]);
+        setSelectedSkills([]);
+        setIsRecruitingOnly(false);
+    };
+
     const filteredTeams = useMemo(() => {
-        return teams.filter(team => {
-            const matchesSearch =
-                team.name.toLowerCase().includes(search.toLowerCase()) ||
-                team.hackathonTitle.toLowerCase().includes(search.toLowerCase()) ||
-                team.description.toLowerCase().includes(search.toLowerCase());
-
-            const matchesRoles =
-                selectedRoles.length === 0 ||
-                selectedRoles.some(roleLabel => {
-                    const roleKeywords = ROLES.find(r => r.label === roleLabel)?.keywords || [];
-                    // 요구 스킬이나 멤버 스킬 중 하나라도 롤 키워드에 매칭되면 통과 (OR 로직)
-                    return team.requiredSkills.some(rs => roleKeywords.some(k => rs.toLowerCase().includes(k))) ||
-                        team.members.some(m => m.skills.some(ms => roleKeywords.some(k => ms.toLowerCase().includes(k))));
-                });
-
-            const matchesHackathon =
-                selectedHackathon === "all" || team.hackathonId === selectedHackathon;
-
-            return matchesSearch && matchesRoles && matchesHackathon;
-        });
-    }, [search, selectedRoles, selectedHackathon]);
+        return getFilteredTeams(teams, search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly);
+    }, [search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly]);
 
     return (
         <div className="min-h-screen px-6 py-12 bg-background text-text transition-colors duration-300">
@@ -74,54 +121,68 @@ export default function CampPage() {
                 {/* 필터 섹션 */}
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-10">
                     <div className="lg:col-span-3 space-y-6">
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <div className="relative flex-1 max-w-2xl">
-                                <svg
-                                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text/50"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                        {/* 검색 및 필터 컨트롤 바 (공중에 뜨는 패널 기준점) */}
+                        <div className="relative" ref={filterRef}>
+                            <div className="flex flex-col sm:flex-row gap-3 relative z-30">
+                                <div className="relative flex-1 max-w-2xl">
+                                    <svg
+                                        className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-text/50"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    <input
+                                        type="text"
+                                        placeholder="팀 명, 프로젝트 설명으로 빠르고 쉽게 검색..."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-text/5 border border-text/10 text-text placeholder-text/50 focus:outline-none focus:border-primary/50 transition-all shadow-sm text-sm"
+                                    />
+                                </div>
+
+                                <select
+                                    value={selectedHackathon}
+                                    onChange={(e) => setSelectedHackathon(e.target.value)}
+                                    className="w-full sm:w-56 px-4 py-3 rounded-xl bg-text/5 border border-text/10 text-text focus:outline-none focus:border-primary/50 transition-all shadow-sm cursor-pointer appearance-none font-medium text-sm"
+                                    style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 1rem center", backgroundSize: "1em" }}
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                                <input
-                                    type="text"
-                                    placeholder="팀 명, 프로젝트 설명으로 빠르고 쉽게 검색..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-text/5 border border-text/10 text-text placeholder-text/50 focus:outline-none focus:border-primary/50 transition-all shadow-sm text-sm"
-                                />
-                            </div>
+                                    <option value="all" className="bg-background text-text">전체 해커톤 검색</option>
+                                    {hackathons.filter(h => h.status === 'ongoing' || h.status === 'upcoming').map(h => (
+                                        <option key={h.id} value={h.id} className="bg-background text-text">
+                                            {h.title}
+                                        </option>
+                                    ))}
+                                </select>
 
-                            <select
-                                value={selectedHackathon}
-                                onChange={(e) => setSelectedHackathon(e.target.value)}
-                                className="w-full sm:w-56 px-4 py-3 rounded-xl bg-text/5 border border-text/10 text-text focus:outline-none focus:border-primary/50 transition-all shadow-sm cursor-pointer appearance-none font-medium text-sm"
-                                style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 1rem center", backgroundSize: "1em" }}
-                            >
-                                <option value="all" className="bg-background text-text">전체 해커톤 검색</option>
-                                {hackathons.filter(h => h.status === 'ongoing' || h.status === 'upcoming').map(h => (
-                                    <option key={h.id} value={h.id} className="bg-background text-text">
-                                        {h.title}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2">
-                            <span className="text-text/60 text-sm self-center mr-2 font-medium tracking-tight">모집 직무:</span>
-                            {ROLES.map(role => (
                                 <button
-                                    key={role.label}
-                                    onClick={() => toggleRole(role.label)}
-                                    className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all ${selectedRoles.includes(role.label)
-                                        ? "bg-primary/20 text-primary border border-primary/50 shadow-sm"
-                                        : "bg-text/5 text-text/60 border border-text/10 hover:border-text/30 hover:bg-text/10"
+                                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                    className={`px-5 py-3 rounded-xl border transition-all flex items-center justify-center gap-2 font-bold text-sm h-full ${hasActiveFilters
+                                        ? "bg-primary/10 text-primary border-primary/30 hover:bg-primary/20 shadow-sm"
+                                        : "bg-text/5 text-text border-text/10 hover:bg-text/10"
                                         }`}
                                 >
-                                    {role.label}
+                                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+                                    <span className="hidden sm:inline">필터</span>
+                                    {hasActiveFilters && (
+                                        <span className="w-4 h-4 rounded-full bg-primary text-background flex items-center justify-center text-[10px] ml-1 shadow-sm font-black">
+                                            {activeFilterCount}
+                                        </span>
+                                    )}
                                 </button>
-                            ))}
+                            </div>
+
+                            <FilterPopover
+                                isOpen={isFilterOpen}
+                                selectedRoles={selectedRoles}
+                                selectedSkills={selectedSkills}
+                                isRecruitingOnly={isRecruitingOnly}
+                                onToggleRole={toggleRole}
+                                onToggleSkill={toggleSkill}
+                                onToggleRecruitingOnly={setIsRecruitingOnly}
+                                onReset={resetFilters}
+                            />
                         </div>
                     </div>
 

@@ -1,3 +1,5 @@
+import { RoleId } from "./roles";
+
 export interface TeamMember {
     id: string;
     name: string;
@@ -15,6 +17,7 @@ export interface Team {
     description: string;
     members: TeamMember[];
     maxMembers: number;
+    requiredRoles: RoleId[];
     requiredSkills: string[];
     isRecruiting: boolean;
     createdAt: string;
@@ -47,6 +50,7 @@ export const teams: Team[] = [
             },
         ],
         maxMembers: 4,
+        requiredRoles: ["ai", "backend"],
         requiredSkills: ["ML Engineering", "Backend (Python)", "Data Science"],
         isRecruiting: true,
         createdAt: "2025-03-10",
@@ -77,6 +81,7 @@ export const teams: Team[] = [
             },
         ],
         maxMembers: 5,
+        requiredRoles: ["blockchain", "frontend", "design"],
         requiredSkills: ["Solidity", "React/Next.js", "UI/UX Design"],
         isRecruiting: true,
         createdAt: "2025-03-12",
@@ -115,6 +120,7 @@ export const teams: Team[] = [
             },
         ],
         maxMembers: 5,
+        requiredRoles: ["frontend", "mobile"],
         requiredSkills: ["Frontend (React)", "Mobile (Flutter or React Native)"],
         isRecruiting: true,
         createdAt: "2025-03-08",
@@ -161,6 +167,7 @@ export const teams: Team[] = [
             },
         ],
         maxMembers: 4,
+        requiredRoles: [],
         requiredSkills: [],
         isRecruiting: false,
         createdAt: "2025-03-05",
@@ -183,6 +190,7 @@ export const teams: Team[] = [
             },
         ],
         maxMembers: 4,
+        requiredRoles: ["backend", "ai", "design"],
         requiredSkills: ["Backend (Java/Spring)", "Data Analytics", "UI/UX"],
         isRecruiting: true,
         createdAt: "2025-03-14",
@@ -213,6 +221,7 @@ export const teams: Team[] = [
             },
         ],
         maxMembers: 4,
+        requiredRoles: ["mobile", "design"],
         requiredSkills: ["Mobile Developer", "UX/Accessibility Designer"],
         isRecruiting: true,
         createdAt: "2025-03-11",
