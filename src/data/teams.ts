@@ -18,7 +18,6 @@ export interface Team {
     requiredSkills: string[];
     isRecruiting: boolean;
     createdAt: string;
-    contactEmail: string;
 }
 
 export const teams: Team[] = [
@@ -51,7 +50,6 @@ export const teams: Team[] = [
         requiredSkills: ["ML Engineering", "Backend (Python)", "Data Science"],
         isRecruiting: true,
         createdAt: "2025-03-10",
-        contactEmail: "nova.builders@email.com",
     },
     {
         id: "t2",
@@ -82,7 +80,6 @@ export const teams: Team[] = [
         requiredSkills: ["Solidity", "React/Next.js", "UI/UX Design"],
         isRecruiting: true,
         createdAt: "2025-03-12",
-        contactEmail: "chain.wizards@email.com",
     },
     {
         id: "t3",
@@ -121,7 +118,6 @@ export const teams: Team[] = [
         requiredSkills: ["Frontend (React)", "Mobile (Flutter or React Native)"],
         isRecruiting: true,
         createdAt: "2025-03-08",
-        contactEmail: "ecosense@email.com",
     },
     {
         id: "t4",
@@ -168,7 +164,6 @@ export const teams: Team[] = [
         requiredSkills: [],
         isRecruiting: false,
         createdAt: "2025-03-05",
-        contactEmail: "healthpulse@email.com",
     },
     {
         id: "t5",
@@ -191,7 +186,6 @@ export const teams: Team[] = [
         requiredSkills: ["Backend (Java/Spring)", "Data Analytics", "UI/UX"],
         isRecruiting: true,
         createdAt: "2025-03-14",
-        contactEmail: "finflow@email.com",
     },
     {
         id: "t6",
@@ -222,6 +216,5 @@ export const teams: Team[] = [
         requiredSkills: ["Mobile Developer", "UX/Accessibility Designer"],
         isRecruiting: true,
         createdAt: "2025-03-11",
-        contactEmail: "lumilearn@email.com",
     },
 ];

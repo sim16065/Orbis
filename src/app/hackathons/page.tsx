@@ -170,7 +170,7 @@ export default function HackathonsPage() {
                                 className="px-3 py-2 rounded-xl bg-text/5 border border-text/10 text-sm focus:outline-none focus:border-primary/50 cursor-pointer text-text/80 font-medium"
                             >
                                 {SORT_OPTIONS.map((o) => (
-                                    <option key={o.value} value={o.value}>
+                                    <option key={o.value} value={o.value} className="bg-background text-text">
                                         {o.label}
                                     </option>
                                 ))}
