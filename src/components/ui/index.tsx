@@ -111,8 +111,8 @@ interface CardProps {
 export function Card({ children, className = "", hover = false }: CardProps) {
     return (
         <div
-            className={`bg-text/[0.03] border border-text/10 rounded-2xl backdrop-blur-sm ${hover
-                ? "transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+            className={`bg-card border border-text/10 rounded-[2rem] p-8 transition-all duration-300 ${hover
+                ? "hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                 : ""
                 } ${className}`}
         >

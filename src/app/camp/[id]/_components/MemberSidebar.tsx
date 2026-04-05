@@ -20,7 +20,7 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
     return (
         <div className="sticky top-24 space-y-6">
             {/* Status Box */}
-            <div className="bg-background border border-text/5 rounded-3xl p-6">
+            <div className="bg-card border border-text/10 rounded-2xl p-6">
                 <div className="flex justify-between items-end mb-2">
                     <span className="font-bold text-text text-sm">팀원 현황</span>
                     <span className="font-black text-text text-sm">{team.members.length} / {team.maxMembers}명</span>
@@ -49,7 +49,7 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
                         className={`w-full py-3.5 rounded-xl font-bold transition-all duration-300 flex justify-center items-center gap-2 mb-3
                         ${applied
                                 ? 'bg-text/5 text-text/50 border border-text/10 cursor-not-allowed'
-                                : 'bg-slate-900 dark:bg-slate-100 text-white dark:text-black shadow-lg hover:-translate-y-0.5'
+                                : 'bg-primary text-background hover:opacity-90 shadow-lg shadow-primary/20'
                             }
                         `}
                     >
@@ -66,19 +66,23 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
 
                 <button
                     onClick={openInquiryModal}
-                    className="w-full py-3.5 rounded-xl font-bold bg-background text-text/70 border border-text/10 hover:bg-text/5 flex items-center justify-center gap-2 transition-colors text-sm"
+                    className="w-full py-3.5 rounded-xl font-bold bg-transparent text-text/70 border border-text/15 hover:bg-text/5 flex items-center justify-center gap-2 transition-colors text-sm"
                 >
                     문의하기
                 </button>
             </div>
 
             {/* Team Member Box */}
-            <div className="bg-background border border-text/5 rounded-3xl p-6 shadow-sm">
+            <div className="bg-card border border-text/10 rounded-2xl p-6">
                 <h3 className="font-extrabold text-sm text-text/60 mb-5">팀장</h3>
                 {team.members.length > 0 && leaderUser && (
                     <div className="flex items-start gap-4 mb-6">
-                        <div className="w-12 h-12 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-text font-bold text-lg shadow-sm flex-shrink-0">
-                            {leaderUser.name.charAt(0)}
+                        <div className="w-12 h-12 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-text font-bold text-lg shadow-sm flex-shrink-0 overflow-hidden">
+                            {leaderUser.avatarUrl ? (
+                                <img src={leaderUser.avatarUrl} alt={leaderUser.name} className="w-full h-full object-cover" />
+                            ) : (
+                                leaderUser.name.charAt(0)
+                            )}
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
@@ -94,8 +98,12 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
                 <div className="space-y-4">
                     {teamMembers.map((member) => (
                         <div key={member.userId} className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-text font-bold text-sm shadow-sm flex-shrink-0">
-                                {member.user?.name.charAt(0)}
+                            <div className="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-text font-bold text-sm shadow-sm flex-shrink-0 overflow-hidden">
+                                {member.user?.avatarUrl ? (
+                                    <img src={member.user.avatarUrl} alt={member.user.name} className="w-full h-full object-cover" />
+                                ) : (
+                                    member.user?.name.charAt(0)
+                                )}
                             </div>
                             <div>
                                 <span className="font-extrabold text-sm block text-text">{member.user?.name}</span>
@@ -107,7 +115,7 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
             </div>
 
             {/* Timeline */}
-            <div className="bg-background border border-text/5 rounded-3xl p-6 shadow-sm">
+            <div className="bg-card border border-text/10 rounded-2xl p-6">
                 <h3 className="font-extrabold text-sm text-text/60 mb-6">타임라인</h3>
                 <div className="relative border-l-2 border-text/5 ml-3 space-y-6 pb-2">
                     <div className="relative pl-6">

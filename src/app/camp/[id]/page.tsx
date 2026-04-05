@@ -28,10 +28,10 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
         <div className="min-h-screen bg-background text-text transition-colors duration-300">
             {/* 상단 네비게이션 */}
             <div className="border-b border-text/5 bg-text/[0.02]">
-                <div className="max-w-[1200px] mx-auto px-6 py-4">
+                <div className="max-w-[1200px] mx-auto px-6 py-4 flex justify-end">
                     <Link href="/camp" className="inline-flex items-center gap-2 text-text/50 hover:text-text transition-colors text-sm font-medium">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-                        팀 빌딩 캠프로 돌아가기
+                        팀 찾기
                     </Link>
                 </div>
             </div>
@@ -50,11 +50,11 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
 
                     {/* 사이드바 (우측) 액션 카드 */}
                     <div className="xl:col-span-1">
-                        <MemberSidebar 
-                            team={team} 
-                            applied={applied} 
-                            applyToTeam={applyToTeam} 
-                            openInquiryModal={openInquiryModal} 
+                        <MemberSidebar
+                            team={team}
+                            applied={applied}
+                            applyToTeam={applyToTeam}
+                            openInquiryModal={openInquiryModal}
                         />
                     </div>
                 </div>

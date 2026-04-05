@@ -6,6 +6,7 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
+  --color-card: var(--card);
 }
 
 :root {
@@ -14,6 +15,7 @@
   /* Light Theme (User provided) */
   --text: #050808;
   --background: #f8f9fb;
+  --card: #ffffff;
   --primary: #6b9f9b;
   --secondary: #ccb1b7;
   --accent: #b4a98b;
@@ -24,6 +26,7 @@
     /* Matching Dark Theme */
     --text: #e2e8e8;
     --background: #1c1f1f;
+    --card: #1c2121;
     --primary: #7bb0ac;
     --secondary: #8a7074;
     --accent: #9c9172;
@@ -33,15 +36,17 @@
 /* For explicit theme switching if needed */
 [data-theme="light"] {
   --text: #050808;
-  --background: #f6f9f9;
+  --background: #f8f9fb;
+  --card: #ffffff;
   --primary: #6b9f9b;
   --secondary: #ccb1b7;
   --accent: #b4a98b;
 }
 
 [data-theme="dark"] {
-  --text: #eef2f2;
-  --background: #0a0f0f;
+  --text: #e2e8e8;
+  --background: #1c1f1f;
+  --card: #1c2121;
   --primary: #7bb0ac;
   --secondary: #8a7074;
   --accent: #9c9172;

@@ -109,7 +109,7 @@ export default function CampPage() {
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                     <div>
                         <h1 className="text-4xl font-extrabold text-text mb-3 tracking-tight">
-                            👥 팀 빌딩 캠프
+                            👥 팀 찾기
                         </h1>
                         <p className="text-text/60 text-lg">
                             함께 해커톤에 도전할 최고의 팀원을 찾아보세요.
@@ -125,7 +125,7 @@ export default function CampPage() {
                 {/* 필터 섹션 */}
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-10">
                     <div className="lg:col-span-3 space-y-6">
-                        {/* 검색 및 필터 컨트롤 바 (공중에 뜨는 패널 기준점) */}
+                        {/* 검색 및 필터 컨트롤 바 */}
                         <div className="relative" ref={filterRef}>
                             <div className="flex flex-col sm:flex-row gap-3 relative z-30">
                                 <div className="relative flex-1 max-w-2xl">

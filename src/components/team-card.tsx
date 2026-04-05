@@ -16,12 +16,12 @@ export function TeamCard({ team }: TeamCardProps) {
     return (
         <Link
             href={`/camp/${team.id}`}
-            className="block h-full bg-text/[0.02] border border-text/10 rounded-2xl p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 group"
+            className="block h-full bg-card border border-text/10 rounded-[2rem] p-8 transition-all duration-300 hover:border-primary/40 hover:shadow-md group"
         >
             {/* 헤더 */}
             <div className="flex items-start justify-between mb-4">
                 <div className="flex-1 pr-4">
-                    <h3 className="text-xl font-black text-text mb-2 tracking-tight group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-black text-text mb-2 tracking-tight">
                         {team.name}
                     </h3>
                     <p className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-md inline-block border border-primary/20 line-clamp-1">
@@ -103,10 +103,12 @@ export function TeamCard({ team }: TeamCardProps) {
                     {team.requiredSkills.slice(0, 3).map((skill, i) => (
                         <div
                             key={i}
-                            className="w-6 h-6 rounded border-2 border-background flex items-center justify-center text-[8px] font-black bg-text/5 text-text/60 shadow-sm"
-                            title={skill}
+                            className="group/skill relative w-6 h-6 rounded border-2 border-background flex items-center justify-center text-[8px] font-black bg-text/5 text-text/60 shadow-sm"
                         >
                             {skill.substring(0, 1).toUpperCase()}
+                            <div className="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-800 text-white text-[10px] rounded opacity-0 translate-y-1 pointer-events-none group-hover/skill:opacity-100 group-hover/skill:translate-y-0 transition-all duration-150 whitespace-nowrap z-10 font-bold shadow-lg">
+                                {skill}
+                            </div>
                         </div>
                     ))}
                     {team.requiredSkills.length > 3 && (

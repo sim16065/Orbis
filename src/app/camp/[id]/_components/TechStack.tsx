@@ -4,7 +4,7 @@ interface TechStackProps {
 
 export function TechStack({ requiredSkills }: TechStackProps) {
     return (
-        <section className="bg-text/[0.02] border border-text/5 rounded-3xl p-8 shadow-sm">
+        <section className="bg-card border border-text/10 rounded-3xl p-8">
             <h2 className="text-xl font-extrabold mb-6 flex items-center gap-2">
                 <span className="text-2xl">🥞</span> 기술 스택
             </h2>
