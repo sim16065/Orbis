@@ -11,11 +11,12 @@ import { RequiredRoles } from "./_components/RequiredRoles";
 import { CommunicationRules } from "./_components/CommunicationRules";
 import { MemberSidebar } from "./_components/MemberSidebar";
 import { InquiryModal } from "./_components/InquiryModal";
+import { ApplyModal } from "./_components/ApplyModal";
 import { useTeamDetail } from "./_hooks/useTeamDetail";
 
 export default function TeamDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const { isChatModalOpen, openInquiryModal, closeInquiryModal, applied, applyToTeam } = useTeamDetail(id);
+    const { isChatModalOpen, openInquiryModal, closeInquiryModal, isApplyModalOpen, openApplyModal, closeApplyModal, applied, applyToTeam } = useTeamDetail(id);
     const team = teams.find((t) => t.id === id);
 
     if (!team) {
@@ -53,7 +54,7 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
                         <MemberSidebar
                             team={team}
                             applied={applied}
-                            applyToTeam={applyToTeam}
+                            openApplyModal={openApplyModal}
                             openInquiryModal={openInquiryModal}
                         />
                     </div>
@@ -61,6 +62,15 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
             </div>
 
             <InquiryModal isOpen={isChatModalOpen} onClose={closeInquiryModal} />
+            <ApplyModal 
+                isOpen={isApplyModalOpen} 
+                onClose={closeApplyModal} 
+                team={team}
+                onSubmit={() => {
+                    applyToTeam(team.id);
+                    closeApplyModal();
+                }}
+            />
         </div>
     );
 }

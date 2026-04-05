@@ -27,7 +27,8 @@ export interface Hackathon {
     title: string;
     organizer: string;
     description: string;
-    longDescription: string;    prize: string;
+    longDescription: string;
+    prize: string;
     prizeAmount: number;
     participants: number;
     maxParticipants: number;
@@ -47,10 +48,11 @@ export const hackathons: Hackathon[] = [
         id: "1",
         slug: "ai-future-2026",
         title: "AI Future Hackathon 2026",
-        organizer: "TechCorp Korea",
+        organizer: "넥스트 지능 연구소",
         description: "AI와 머신러닝을 활용한 미래 혁신 솔루션을 만들어 보세요.",
         longDescription:
-            "AI Future Hackathon 2026는 인공지능 기술로 사회 문제를 해결하는 혁신적인 솔루션을 발굴하는 대회입니다. 의료, 교육, 환경 등 다양한 분야에서 AI를 활용한 프로젝트를 개발하고 전문가 심사위원들의 평가를 받아보세요. 팀 구성부터 최종 발표까지 48시간 동안 진행되는 강렬한 해킹 경험을 제공합니다.",        prize: "1억원",
+            "AI Future Hackathon 2026는 인공지능 기술로 사회 문제를 해결하는 혁신적인 솔루션을 발굴하는 대회입니다. 의료, 교육, 환경 등 다양한 분야에서 AI를 활용한 프로젝트를 개발하고 전문가 심사위원들의 평가를 받아보세요. 팀 구성부터 최종 발표까지 48시간 동안 진행되는 강렬한 해킹 경험을 제공합니다.",
+        prize: "1억원",
         prizeAmount: 100000000,
         participants: 342,
         maxParticipants: 500,
@@ -59,7 +61,7 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-03-15",
         status: "ongoing",
         mode: "hybrid",
-        imageUrl: "/hackathon.jpg",
+        imageUrl: "/hackathon/hackaton1.png",
         location: "서울 코엑스",
         submission: {
             items: [
@@ -105,10 +107,11 @@ export const hackathons: Hackathon[] = [
         id: "2",
         slug: "web3-builders-2026",
         title: "Web3 Builders Challenge",
-        organizer: "BlockChain Foundation",
+        organizer: "코드체인 연합 x 가디언 쉴드 보안팀",
         description: "블록체인과 Web3 기술로 탈중앙화 미래를 설계하세요.",
         longDescription:
-            "Web3 Builders Challenge는 블록체인 기술을 활용한 혁신적인 dApp을 개발하는 해커톤입니다. DeFi, NFT, DAO 등 Web3의 다양한 분야에서 솔루션을 구축해보세요. Ethereum, Solana, Polygon 등 다양한 체인을 지원하며, 멘토들의 기술 지원과 함께 진행됩니다.",        prize: "5000만원",
+            "Web3 Builders Challenge는 블록체인 기술을 활용한 혁신적인 dApp을 개발하는 해커톤입니다. DeFi, NFT, DAO 등 Web3의 다양한 분야에서 솔루션을 구축해보세요. Ethereum, Solana, Polygon 등 다양한 체인을 지원하며, 멘토들의 기술 지원과 함께 진행됩니다.",
+        prize: "5000만원",
         prizeAmount: 50000000,
         participants: 178,
         maxParticipants: 300,
@@ -117,7 +120,7 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-03-10",
         status: "ongoing",
         mode: "online",
-        imageUrl: "/hackathon.jpg",
+        imageUrl: "/hackathon/hackaton8.png",
         submission: {
             items: [
                 {
@@ -161,10 +164,11 @@ export const hackathons: Hackathon[] = [
         id: "3",
         slug: "green-tech-hack",
         title: "Green Tech Hackathon",
-        organizer: "환경부 x StartupHub",
+        organizer: "푸른지구 기술원 x 에코 시너지 재단",
         description: "환경 문제를 기술로 해결하는 그린테크 솔루션을 개발하세요.",
         longDescription:
-            "지구 환경 위기를 기술로 해결하는 Green Tech Hackathon입니다. 탄소 중립, 재활용, 스마트 에너지 관리 등 환경 분야의 다양한 문제를 IoT, AI, 빅데이터 등의 기술로 해결하는 혁신 솔루션을 개발해보세요.",        prize: "3000만원",
+            "지구 환경 위기를 기술로 해결하는 Green Tech Hackathon입니다. 탄소 중립, 재활용, 스마트 에너지 관리 등 환경 분야의 다양한 문제를 IoT, AI, 빅데이터 등의 기술로 해결하는 혁신 솔루션을 개발해보세요.",
+        prize: "3000만원",
         prizeAmount: 30000000,
         participants: 256,
         maxParticipants: 256,
@@ -173,7 +177,7 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-01-20",
         status: "ended",
         mode: "offline",
-        imageUrl: "/poster.jpg",
+        imageUrl: "/hackathon/hackaton3.png",
         location: "부산 벡스코",
         submission: {
             items: [
@@ -217,10 +221,11 @@ export const hackathons: Hackathon[] = [
         id: "4",
         slug: "healthcare-innovation",
         title: "Healthcare Innovation Sprint",
-        organizer: "서울대병원 x KAIST",
+        organizer: "생명과학 통합센터 x 헬스커넥트 코리아",
         description: "헬스케어 난제를 해결하는 디지털 의료 솔루션을 만드세요.",
         longDescription:
-            "Healthcare Innovation Sprint는 의료 현장의 실제 문제를 기술로 해결하는 해커톤입니다. 의사, 간호사, 환자 등 실제 이해관계자들과 함께 문제를 정의하고, 디지털 헬스케어 솔루션을 개발합니다.",        prize: "7000만원",
+            "Healthcare Innovation Sprint는 의료 현장의 실제 문제를 기술로 해결하는 해커톤입니다. 의사, 간호사, 환자 등 실제 이해관계자들과 함께 문제를 정의하고, 디지털 헬스케어 솔루션을 개발합니다.",
+        prize: "7000만원",
         prizeAmount: 70000000,
         participants: 89,
         maxParticipants: 200,
@@ -229,7 +234,7 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-04-25",
         status: "upcoming",
         mode: "hybrid",
-        imageUrl: "/poster.jpg",
+        imageUrl: "/hackathon/hackaton7.png",
         location: "서울 강남",
         submission: {
             items: [
@@ -281,10 +286,11 @@ export const hackathons: Hackathon[] = [
         id: "5",
         slug: "fintech-disrupt",
         title: "FinTech Disrupt 2026",
-        organizer: "카카오페이 x 토스",
+        organizer: "미래금융 연동망 x 노바 레저 홀딩스",
         description: "금융의 미래를 재정의하는 핀테크 혁신 솔루션을 개발하세요.",
         longDescription:
-            "FinTech Disrupt 2026는 전통 금융 산업을 혁신하는 솔루션을 개발하는 해커톤입니다. 간편결제, 자산관리, 보험, 대출 등 금융의 모든 영역에서 혁신적인 아이디어를 제안하고 프로토타입을 만들어보세요.",        prize: "8000만원",
+            "FinTech Disrupt 2026는 전통 금융 산업을 혁신하는 솔루션을 개발하는 해커톤입니다. 간편결제, 자산관리, 보험, 대출 등 금융의 모든 영역에서 혁신적인 아이디어를 제안하고 프로토타입을 만들어보세요.",
+        prize: "8000만원",
         prizeAmount: 80000000,
         participants: 215,
         maxParticipants: 400,
@@ -293,7 +299,7 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-05-20",
         status: "upcoming",
         mode: "online",
-        imageUrl: "/hackathon.jpg",
+        imageUrl: "/hackathon/hackaton6.png",
         submission: {
             items: [
                 {
@@ -336,10 +342,11 @@ export const hackathons: Hackathon[] = [
         id: "6",
         slug: "edu-hack-2026",
         title: "EduHack 2026",
-        organizer: "교육부 x EdTech 협회",
+        organizer: "참배움 테크랩 x 에듀케이션 원 연합",
         description: "교육의 불평등을 해소하는 에듀테크 솔루션을 만드세요.",
         longDescription:
-            "EduHack 2026는 교육 접근성과 품질을 향상시키는 기술 솔루션을 개발하는 해커톤입니다. 개인화 학습, AI 튜터, 장애 학생 지원 등 교육의 다양한 문제를 해결해보세요.",        prize: "2000만원",
+            "EduHack 2026는 교육 접근성과 품질을 향상시키는 기술 솔루션을 개발하는 해커톤입니다. 개인화 학습, AI 튜터, 장애 학생 지원 등 교육의 다양한 문제를 해결해보세요.",
+        prize: "2000만원",
         prizeAmount: 20000000,
         participants: 134,
         maxParticipants: 250,
@@ -348,7 +355,7 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-07-01",
         status: "upcoming",
         mode: "online",
-        imageUrl: "/hackathon.jpg",
+        imageUrl: "/hackathon/hackaton5.png",
         submission: {
             items: [
                 {
@@ -391,10 +398,11 @@ export const hackathons: Hackathon[] = [
         id: "7",
         slug: "cyber-defense-2026",
         title: "Cyber Defense Challenge",
-        organizer: "국방부 x 보안뉴스",
+        organizer: "국가보안 가디언즈 x 아이언 시타델 시큐리티",
         description: "국가 안보를 위협하는 사이버 공격에 대비한 방어 솔루션을 구축하세요.",
         longDescription:
-            "Cyber Defense Challenge는 급변하는 사이버 위협 환경에서 국가 인프라를 보호하기 위한 혁신적인 보안 기술을 발굴합니다. 네트워크 보안, 암호화, 취약점 분석 등 보안 전 분야를 다루며, 화이트해커와 개발자들이 협력하여 실제 시나리오를 바탕으로 대응 방안을 제시합니다.",        prize: "4000만원",
+            "Cyber Defense Challenge는 급변하는 사이버 위협 환경에서 국가 인프라를 보호하기 위한 혁신적인 보안 기술을 발굴합니다. 네트워크 보안, 암호화, 취약점 분석 등 보안 전 분야를 다루며, 화이트해커와 개발자들이 협력하여 실제 시나리오를 바탕으로 대응 방안을 제시합니다.",
+        prize: "4000만원",
         prizeAmount: 40000000,
         participants: 112,
         maxParticipants: 150,
@@ -403,8 +411,8 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-08-10",
         status: "upcoming",
         mode: "offline",
-        imageUrl: "/hackathon.jpg",
-        location: "서울 국방컨벤션",
+        imageUrl: "/hackathon/hackaton4.png",
+        location: "서울 제로-그라운드",
         submission: {
             items: [
                 {
@@ -447,10 +455,11 @@ export const hackathons: Hackathon[] = [
         id: "8",
         slug: "mobility-future-sprint",
         title: "Mobility Future Sprint",
-        organizer: "현대자동차 x 네이버맵",
+        organizer: "하이웨이 모빌리티 x 스마트 시티 건설본부",
         description: "자율주행과 스마트 모빌리티가 가져올 새로운 이동 경험을 설계하세요.",
         longDescription:
-            "미래 이동 수단은 단순한 운송을 넘어 삶의 공간이 됩니다. Mobility Future Sprint는 자율주행 API, 실시간 교통 데이터 등을 활용해 더욱 편리하고 안전한 이동 서비스를 개발하는 대회입니다. 도심 항공 모빌리티(UAM)와 목적지 기반 모빌리티(PBV) 시나리오를 환영합니다.",        prize: "9000만원",
+            "미래 이동 수단은 단순한 운송을 넘어 삶의 공간이 됩니다. Mobility Future Sprint는 자율주행 API, 실시간 교통 데이터 등을 활용해 더욱 편리하고 안전한 이동 서비스를 개발하는 대회입니다. 도심 항공 모빌리티(UAM)와 목적지 기반 모빌리티(PBV) 시나리오를 환영합니다.",
+        prize: "9000만원",
         prizeAmount: 90000000,
         participants: 156,
         maxParticipants: 300,
@@ -459,8 +468,8 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-02-15",
         status: "ongoing",
         mode: "hybrid",
-        imageUrl: "/hackathon.jpg",
-        location: "경기 현대차 연수원",
+        imageUrl: "/hackathon/hackaton9.png",
+        location: "경기 하이웨이 연수원",
         submission: {
             items: [
                 {
@@ -503,10 +512,11 @@ export const hackathons: Hackathon[] = [
         id: "9",
         slug: "space-data-hack",
         title: "Space Data Hackathon",
-        organizer: "KARI(항공우주연구원) x NASA API",
+        organizer: "천문 데이터 본부 x 제니스 오빗 시스템즈",
         description: "위성 데이터와 우주 정보를 활용해 지구의 난제를 해결해보세요.",
         longDescription:
-            "위성에서 보내오는 방대한 데이터를 어떻게 활용할 수 있을까요? Space Data Hackathon은 위성 이미지 처리, 기후 변화 모니터링, 우주 자원 탐사 등 우주 데이터를 기반으로 한 창의적인 웹/앱 서비스를 모집합니다. 참가자들에게는 고해상도 위성 데이터 접근 권한이 제공됩니다.",        prize: "6000만원",
+            "위성에서 보내오는 방대한 데이터를 어떻게 활용할 수 있을까요? Space Data Hackathon은 위성 이미지 처리, 기후 변화 모니터링, 우주 자원 탐사 등 우주 데이터를 기반으로 한 창의적인 웹/앱 서비스를 모집합니다. 참가자들에게는 고해상도 위성 데이터 접근 권한이 제공됩니다.",
+        prize: "6000만원",
         prizeAmount: 60000000,
         participants: 94,
         maxParticipants: 200,
@@ -515,7 +525,7 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-09-01",
         status: "upcoming",
         mode: "online",
-        imageUrl: "/hackathon.jpg",
+        imageUrl: "/hackathon/hackaton1.png",
         submission: {
             items: [
                 {
@@ -558,10 +568,11 @@ export const hackathons: Hackathon[] = [
         id: "10",
         slug: "indie-game-jam-2026",
         title: "K-Indie Game Jam 2026",
-        organizer: "넥슨 x 게임물관리위원회",
+        organizer: "상상력 게임 스튜디오 x 유니버스 엔진 코리아",
         description: "48시간 안에 세상을 놀라게 할 인디 게임 프로토타입을 만드세요.",
         longDescription:
-            "독창적인 아이디어 하나로 승부하는 K-Indie Game Jam입니다. 장르 제한 없이, 예술성과 게임성이 뛰어난 인디 게임을 개발합니다. 현업 게임 개발자들의 멘토링이 제공되며, 우수작은 실제 퍼블리싱 지원 기회를 얻을 수 있습니다.",        prize: "3000만원",
+            "독창적인 아이디어 하나로 승부하는 K-Indie Game Jam입니다. 장르 제한 없이, 예술성과 게임성이 뛰어난 인디 게임을 개발합니다. 현업 게임 개발자들의 멘토링이 제공되며, 우수작은 실제 퍼블리싱 지원 기회를 얻을 수 있습니다.",
+        prize: "3000만원",
         prizeAmount: 30000000,
         participants: 250,
         maxParticipants: 250,
@@ -570,8 +581,8 @@ export const hackathons: Hackathon[] = [
         registrationDeadline: "2026-01-01",
         status: "ended",
         mode: "offline",
-        imageUrl: "/hackathon.jpg",
-        location: "판교 경기창조경제혁신센터",
+        imageUrl: "/hackathon/hackaton1.png",
+        location: "판교 하이퍼루프 센터",
         submission: {
             items: [
                 {

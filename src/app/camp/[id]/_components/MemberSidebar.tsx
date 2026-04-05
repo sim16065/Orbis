@@ -6,11 +6,11 @@ import { users } from "@/data/users";
 interface MemberSidebarProps {
     team: Team;
     applied: boolean;
-    applyToTeam: (teamId: string) => void;
+    openApplyModal: () => void;
     openInquiryModal: () => void;
 }
 
-export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: MemberSidebarProps) {
+export function MemberSidebar({ team, applied, openApplyModal, openInquiryModal }: MemberSidebarProps) {
     const leaderUser = team.members.length > 0 ? users.find(u => u.id === team.members[0].userId) : null;
     const teamMembers = team.members.slice(1).map(member => ({
         ...member,
@@ -44,7 +44,7 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
 
                 {team.isRecruiting ? (
                     <button
-                        onClick={() => applyToTeam(team.id)}
+                        onClick={openApplyModal}
                         disabled={applied}
                         className={`w-full py-3.5 rounded-xl font-bold transition-all duration-300 flex justify-center items-center gap-2 mb-3
                         ${applied

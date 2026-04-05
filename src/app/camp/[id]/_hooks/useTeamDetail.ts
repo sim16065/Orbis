@@ -7,13 +7,20 @@ export function useTeamDetail(teamId: string) {
 
     const applied = isApplied(teamId);
 
+    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+
     const openInquiryModal = () => setIsChatModalOpen(true);
     const closeInquiryModal = () => setIsChatModalOpen(false);
+    const openApplyModal = () => setIsApplyModalOpen(true);
+    const closeApplyModal = () => setIsApplyModalOpen(false);
 
     return {
         isChatModalOpen,
         openInquiryModal,
         closeInquiryModal,
+        isApplyModalOpen,
+        openApplyModal,
+        closeApplyModal,
         applied,
         applyToTeam
     };

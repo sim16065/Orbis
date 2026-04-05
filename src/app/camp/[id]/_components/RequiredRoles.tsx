@@ -38,7 +38,7 @@ export function RequiredRoles({ team }: RequiredRolesProps) {
                                 <div className="mb-5">
                                     <p className="text-xs font-bold mb-2 opacity-60 text-text">필수 스킬</p>
                                     <div className="flex flex-wrap gap-2">
-                                        {(roleData?.defaultSkills || team.requiredSkills).slice(0, 3).map((skill) => (
+                                        {(team.requiredSkillsByRole?.[roleId] || roleData?.defaultSkills || team.requiredSkills).map((skill) => (
                                             <span key={skill} className={`px-3 py-1.5 rounded-lg text-xs font-bold border shadow-sm ${color.skill}`}>
                                                 {skill}
                                             </span>

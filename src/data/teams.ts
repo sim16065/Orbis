@@ -16,6 +16,8 @@ export interface Team {
     maxMembers: number;
     requiredRoles: RoleId[];
     requiredSkills: string[];
+    // New: Role-specific required skills specified by the team leader
+    requiredSkillsByRole?: Partial<Record<RoleId, string[]>>;
     isRecruiting: boolean;
     createdAt: string;
 }
@@ -35,6 +37,10 @@ export const teams: Team[] = [
         maxMembers: 4,
         requiredRoles: ["ai", "backend"],
         requiredSkills: ["ML Engineering", "Backend (Python)", "Data Science"],
+        requiredSkillsByRole: {
+            ai: ["Python", "PyTorch", "TensorFlow"],
+            backend: ["Node.js", "Python", "Java"]
+        },
         isRecruiting: true,
         createdAt: "2025-03-10",
     },
@@ -52,6 +58,11 @@ export const teams: Team[] = [
         maxMembers: 5,
         requiredRoles: ["blockchain", "frontend", "design"],
         requiredSkills: ["Solidity", "React/Next.js", "UI/UX Design"],
+        requiredSkillsByRole: {
+            blockchain: ["Solidity", "Web3.js", "Ethereum"],
+            frontend: ["React", "Next.js", "Vue"],
+            design: ["Figma", "UI/UX", "Branding"]
+        },
         isRecruiting: true,
         createdAt: "2025-03-12",
     },
