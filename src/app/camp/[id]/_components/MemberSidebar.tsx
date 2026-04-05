@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { Team } from "@/data/teams";
 import { ROLE_LABELS } from "@/data/roles";
+import { users } from "@/data/users";
 
 interface MemberSidebarProps {
     team: Team;
@@ -10,6 +11,12 @@ interface MemberSidebarProps {
 }
 
 export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: MemberSidebarProps) {
+    const leaderUser = team.members.length > 0 ? users.find(u => u.id === team.members[0].userId) : null;
+    const teamMembers = team.members.slice(1).map(member => ({
+        ...member,
+        user: users.find(u => u.id === member.userId)
+    }));
+
     return (
         <div className="sticky top-24 space-y-6">
             {/* Status Box */}
@@ -68,14 +75,14 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
             {/* Team Member Box */}
             <div className="bg-background border border-text/5 rounded-3xl p-6 shadow-sm">
                 <h3 className="font-extrabold text-sm text-text/60 mb-5">팀장</h3>
-                {team.members.length > 0 && (
+                {team.members.length > 0 && leaderUser && (
                     <div className="flex items-start gap-4 mb-6">
                         <div className="w-12 h-12 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-text font-bold text-lg shadow-sm flex-shrink-0">
-                            {team.members[0].name.charAt(0)}
+                            {leaderUser.name.charAt(0)}
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                                <span className="font-extrabold text-text">{team.members[0].name}</span>
+                                <span className="font-extrabold text-text">{leaderUser.name}</span>
                                 <span className="px-2 py-0.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] font-black rounded-full border border-amber-500/20">팀장</span>
                             </div>
                             <p className="text-xs text-text/60 mb-3 font-medium">{team.members[0].role}</p>
@@ -85,13 +92,13 @@ export function MemberSidebar({ team, applied, applyToTeam, openInquiryModal }: 
 
                 <h3 className="font-extrabold text-sm text-text/60 mb-4 pt-5 border-t border-text/5">현재 팀원</h3>
                 <div className="space-y-4">
-                    {team.members.slice(1).map((member) => (
-                        <div key={member.id} className="flex items-center gap-4">
+                    {teamMembers.map((member) => (
+                        <div key={member.userId} className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-text font-bold text-sm shadow-sm flex-shrink-0">
-                                {member.name.charAt(0)}
+                                {member.user?.name.charAt(0)}
                             </div>
                             <div>
-                                <span className="font-extrabold text-sm block text-text">{member.name}</span>
+                                <span className="font-extrabold text-sm block text-text">{member.user?.name}</span>
                                 <span className="text-xs text-text/50 font-medium">{member.role}</span>
                             </div>
                         </div>

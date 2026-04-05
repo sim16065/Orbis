@@ -1,43 +1,30 @@
-"use client";
-
-import { Team } from "@/data/teams";
-import { Button } from "@/components/ui";
 import Link from "next/link";
+import { Team } from "@/data/teams";
+import { users } from "@/data/users";
 import { ROLE_LABELS } from "@/data/roles";
 
 interface TeamCardProps {
     team: Team;
-    isApplied?: boolean;
-    onApply?: (teamId: string) => void;
 }
 
-const avatarColors = [
-    "from-violet-500 to-purple-600",
-    "from-indigo-500 to-blue-600",
-    "from-emerald-500 to-teal-600",
-    "from-amber-500 to-orange-600",
-    "from-rose-500 to-pink-600",
-];
-
-export default function TeamCard({
-    team,
-    isApplied = false,
-    onApply,
-}: TeamCardProps) {
+export function TeamCard({ team }: TeamCardProps) {
     const openSlots = team.maxMembers - team.members.length;
+
+    // Resolve user data for avatars
+    const teamMembersWithUsers = team.members.map(m => users.find(u => u.id === m.userId)).filter(u => u !== undefined);
 
     return (
         <Link
             href={`/camp/${team.id}`}
-            className="block bg-text/[0.02] border border-text/10 rounded-2xl p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 group"
+            className="block h-full bg-text/[0.02] border border-text/10 rounded-2xl p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 group"
         >
             {/* 헤더 */}
             <div className="flex items-start justify-between mb-4">
-                <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-text font-bold text-lg leading-tight">{team.name}</h3>
-                    </div>
-                    <p className="text-xs text-primary font-bold mt-1.5 opacity-90">
+                <div className="flex-1 pr-4">
+                    <h3 className="text-xl font-black text-text mb-2 tracking-tight group-hover:text-primary transition-colors">
+                        {team.name}
+                    </h3>
+                    <p className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-md inline-block border border-primary/20 line-clamp-1">
                         {team.hackathonTitle}
                     </p>
                 </div>
@@ -63,23 +50,26 @@ export default function TeamCard({
                 </div>
             </div>
 
-            {/* 설명 */}
-            <p className="text-text/70 text-sm mb-4 leading-relaxed line-clamp-2">
+            {/* 본문 요약 */}
+            <p className="text-text/70 text-sm leading-relaxed mb-6 line-clamp-2 min-h-[40px]">
                 {team.description}
             </p>
 
-            {/* 현재 팀원 */}
-            <div className="mb-4">
-                <p className="text-xs text-text/50 mb-2 font-medium">현재 팀원</p>
+            {/* 현재 멤버 프로필 사진 미리보기 */}
+            <div className="flex items-center gap-3 mb-5">
                 <div className="flex -space-x-2">
-                    {team.members.map((member, idx) => (
+                    {teamMembersWithUsers.map((user, idx) => (
                         <div
-                            key={member.id}
-                            className={`w-9 h-9 rounded-full bg-gradient-to-br ${avatarColors[idx % avatarColors.length]
-                                } border-2 border-background flex items-center justify-center text-white text-xs font-bold shadow-md relative z-10`}
-                            title={`${member.name} - ${member.role}`}
+                            key={user!.id || idx}
+                            className="w-8 h-8 rounded-full bg-text/10 border-2 border-background flex items-center justify-center shadow-sm"
                         >
-                            {member.name.charAt(0)}
+                            {user!.avatarUrl ? (
+                                <img src={user!.avatarUrl} alt={user!.name} className="w-full h-full rounded-full object-cover" />
+                            ) : (
+                                <span className="text-[10px] font-bold text-text/60">
+                                    {user!.name.charAt(0)}
+                                </span>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -109,19 +99,22 @@ export default function TeamCard({
                 <p className="text-xs text-text/50 font-medium">
                     {openSlots > 0 ? `${openSlots}명 모집 중` : "팀원 모집 완료"}
                 </p>
-                {team.isRecruiting ? (
-                    <div className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${isApplied
-                        ? "bg-text/5 text-text/50 border border-text/5"
-                        : "bg-primary text-background shadow-md shadow-primary/20 group-hover:bg-primary/90"
-                        }`}>
-                        {isApplied ? "✓ 지원 완료" : "상세보기"}
-
-                    </div>
-                ) : (
-                    <div className="px-4 py-1.5 text-xs font-bold rounded-lg bg-text/5 text-text/40 border border-text/5 flex items-center justify-center">
-                        모집 종료
-                    </div>
-                )}
+                <div className="flex -space-x-1">
+                    {team.requiredSkills.slice(0, 3).map((skill, i) => (
+                        <div
+                            key={i}
+                            className="w-6 h-6 rounded border-2 border-background flex items-center justify-center text-[8px] font-black bg-text/5 text-text/60 shadow-sm"
+                            title={skill}
+                        >
+                            {skill.substring(0, 1).toUpperCase()}
+                        </div>
+                    ))}
+                    {team.requiredSkills.length > 3 && (
+                        <div className="w-6 h-6 rounded border-2 border-background flex items-center justify-center text-[8px] font-black bg-text/10 text-text/70 shadow-sm">
+                            +
+                        </div>
+                    )}
+                </div>
             </div>
         </Link>
     );

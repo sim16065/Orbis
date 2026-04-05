@@ -22,8 +22,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Matching Dark Theme */
-    --text: #eef2f2;
-    --background: #0a0f0f;
+    --text: #e2e8e8;
+    --background: #1c1f1f;
     --primary: #7bb0ac;
     --secondary: #8a7074;
     --accent: #9c9172;

@@ -2,11 +2,12 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { teams, Team } from "@/data/teams";
-import TeamCard from "@/components/team-card";
+import { TeamCard } from "@/components/team-card";
 import { useTeamApplications } from "@/lib/hooks";
 import { hackathons } from "@/data/hackathons";
 import { RoleId } from "@/data/roles";
 import { FilterPopover } from "@/components/filter-popover";
+import { users } from "@/data/users";
 
 function getFilteredTeams(
     teamsData: Team[],
@@ -30,7 +31,10 @@ function getFilteredTeams(
             selectedSkills.length === 0 ||
             selectedSkills.some(skill =>
                 team.requiredSkills.some(rs => rs.toLowerCase().includes(skill.toLowerCase())) ||
-                team.members.some(m => m.skills.some(ms => ms.toLowerCase().includes(skill.toLowerCase())))
+                team.members.some(m => {
+                    const user = users.find(u => u.id === m.userId);
+                    return user?.skills.some(ms => ms.toLowerCase().includes(skill.toLowerCase()));
+                })
             );
 
         const matchesHackathon =
@@ -212,8 +216,6 @@ export default function CampPage() {
                             <TeamCard
                                 key={team.id}
                                 team={team}
-                                isApplied={isApplied(team.id)}
-                                onApply={applyToTeam}
                             />
                         ))
                     ) : (

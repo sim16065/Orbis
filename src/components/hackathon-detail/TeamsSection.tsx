@@ -1,6 +1,7 @@
 import { Badge, Button, Card } from "../ui";
 import Link from "next/link";
 import { Team } from "@/data/teams";
+import { users } from "@/data/users";
 
 type TeamsSectionProps = {
     teams: Team[];
@@ -29,13 +30,18 @@ export function TeamsSection({ teams }: TeamsSectionProps) {
                             </div>
                             <p className="text-sm text-text/60 mb-4 line-clamp-2">{team.description}</p>
                             <div className="flex -space-x-2 mb-4">
-                                {team.members.map((m) => (
-                                    <div key={m.id} className="w-8 h-8 rounded-full border-2 border-background bg-text/10 flex items-center justify-center text-text/80 text-[10px] font-bold">
-                                        {m.name.charAt(0)}
-                                    </div>
-                                ))}
+                                {team.members.map((m, idx) => {
+                                    const user = users.find(u => u.id === m.userId);
+                                    return (
+                                        <div key={m.userId || idx} className="w-8 h-8 rounded-full border-2 border-background bg-text/10 flex items-center justify-center text-text/80 text-[10px] font-bold">
+                                            {user ? user.name.charAt(0) : "?"}
+                                        </div>
+                                    );
+                                })}
                             </div>
-                            <Button variant="outline" size="sm" className="w-full border-text/10 hover:bg-text/5 text-text">팀 상세보기</Button>
+                            <Link href={`/camp/${team.id}`}>
+                                <Button variant="outline" size="sm" className="w-full border-text/10 hover:bg-text/5 text-text">팀 상세보기</Button>
+                            </Link>
                         </Card>
                     ))
                 ) : (
