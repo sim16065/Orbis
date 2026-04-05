@@ -11,7 +11,7 @@ import { RequiredRoles } from "./_components/RequiredRoles";
 import { CommunicationRules } from "./_components/CommunicationRules";
 import { MemberSidebar } from "./_components/MemberSidebar";
 import { InquiryModal } from "./_components/InquiryModal";
-import { ApplyModal } from "./_components/ApplyModal";
+import { ApplyModal } from "./_components/apply-modal";
 import { useTeamDetail } from "./_hooks/useTeamDetail";
 
 export default function TeamDetailPage({ params }: { params: Promise<{ id: string }> }) {
