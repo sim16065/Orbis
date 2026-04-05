@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { teams, Team } from "@/data/teams";
+import { Team } from "@/data/teams";
 import { TeamCard } from "@/components/team-card";
 import { useTeamApplications } from "@/lib/hooks";
 import { hackathons } from "@/data/hackathons";
-import { RoleId } from "@/data/roles";
+import { RoleId, ROLES } from "@/data/roles";
 import { FilterPopover } from "@/components/filter-popover";
 import { users } from "@/data/users";
+import { CreateTeamModal } from "./_components/CreateTeamModal";
+import { getAllTeams, saveTeam } from "@/lib/team-store";
+
 
 function getFilteredTeams(
     teamsData: Team[],
@@ -55,7 +58,47 @@ export default function CampPage() {
     const [isRecruitingOnly, setIsRecruitingOnly] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const { isApplied, applyToTeam } = useTeamApplications();
+    const [allTeams, setAllTeams] = useState<Team[]>([]);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const filterRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setAllTeams(getAllTeams());
+    }, []);
+
+    const filteredTeams = useMemo(() => 
+        getFilteredTeams(allTeams, search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly),
+    [allTeams, search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly]);
+
+    const handleAddTeam = (data: any) => {
+        const selectedHack = hackathons.find(h => h.id === data.hackathonId);
+        
+        const newTeam: Team = {
+            id: Date.now().toString(),
+            name: data.teamName,
+            hackathonId: data.hackathonId,
+            hackathonTitle: selectedHack?.title || "해커톤",
+            description: data.intro,
+            members: [
+                { userId: "u_me", role: `팀장 / ${ROLES.find(r => r.id === data.leaderRole)?.label || "개발자"}` }
+            ],
+            maxMembers: data.positions.reduce((acc: number, p: any) => acc + p.count, 0) + 1,
+            requiredRoles: data.positions.map((p: any) => p.role).filter(Boolean),
+            requiredSkills: Array.from(new Set(data.positions.flatMap((p: any) => p.skills))),
+            requiredSkillsByRole: data.positions.reduce((acc: any, p: any) => {
+                if (p.role) acc[p.role] = p.skills;
+                return acc;
+            }, {}),
+            isRecruiting: true,
+            createdAt: new Date().toISOString().split('T')[0]
+        };
+
+        saveTeam(newTeam);
+        setAllTeams(prev => [newTeam, ...prev]);
+        setIsCreateModalOpen(false);
+        alert("🎉 새로운 팀이 성공적으로 창설되었습니다!");
+    };
+
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -98,10 +141,6 @@ export default function CampPage() {
         setIsRecruitingOnly(false);
     };
 
-    const filteredTeams = useMemo(() => {
-        return getFilteredTeams(teams, search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly);
-    }, [search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly]);
-
     return (
         <div className="min-h-screen px-6 py-12 bg-background text-text transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
@@ -116,9 +155,13 @@ export default function CampPage() {
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        <button className="px-6 py-3 rounded-2xl bg-primary text-background font-bold shadow-lg shadow-primary/30 hover:opacity-90 hover:-translate-y-0.5 transition-all">
-                            내 팀 만들기
+                        <button 
+                            onClick={() => setIsCreateModalOpen(true)}
+                            className="px-6 py-3 rounded-2xl bg-primary text-background font-bold shadow-lg shadow-primary/30 hover:opacity-90 hover:-translate-y-0.5 transition-all"
+                        >
+                            팀 만들기
                         </button>
+
                     </div>
                 </div>
 
@@ -227,6 +270,13 @@ export default function CampPage() {
                     )}
                 </div>
             </div>
+
+            <CreateTeamModal
+                isOpen={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                hackathons={hackathons}
+                onSubmit={handleAddTeam}
+            />
         </div>
     );
 }

@@ -21,7 +21,7 @@ export const SkillPicker: React.FC<SkillPickerProps> = ({ selectedSkills, onTogg
     const [isPickerOpen, setIsPickerOpen] = useState(false);
     const [search, setSearch] = useState("");
 
-    const filteredSkills = useMemo(() => 
+    const filteredSkills = useMemo(() =>
         ALL_SKILLS.filter(s => s.toLowerCase().includes(search.toLowerCase())),
         [search]
     );
@@ -48,7 +48,7 @@ export const SkillPicker: React.FC<SkillPickerProps> = ({ selectedSkills, onTogg
 
                 {!isPickerOpen ? (
                     <button onClick={() => setIsPickerOpen(true)} className="flex items-center gap-1.5 text-sm text-text/60 hover:text-text font-medium transition-colors">
-                        <span className="text-lg leading-none tracking-tight">+</span> 전체 스택에서 추가하기
+                        <span className="text-lg leading-none tracking-tight">+</span> 전체 스택 보기
                     </button>
                 ) : (
                     <div className="mt-4 pt-4 border-t border-text/10 animate-in slide-in-from-top-2 duration-200">

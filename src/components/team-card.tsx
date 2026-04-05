@@ -76,23 +76,22 @@ export function TeamCard({ team }: TeamCardProps) {
             </div>
 
             {/* 필요 스킬 */}
-            {team.requiredRoles.length > 0 && (
-                <div className="mb-4">
-                    <div className="flex flex-wrap gap-1.5">
-                        {team.requiredRoles.slice(0, 3).map((roleId) => (
-                            <span key={roleId} className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
-                                {ROLE_LABELS[roleId]}
-                            </span>
-                        ))}
-                        {team.requiredRoles.length > 3 && (
-                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-text/5 text-text/60 border border-text/10">+{team.requiredRoles.length - 3}</span>
-                        )}
-                        {team.requiredRoles.length === 0 && team.requiredSkills.length > 0 && (
-                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-text/5 text-text/60 border border-text/10">스킬 무관</span>
-                        )}
-                    </div>
+            <div className="mb-4">
+                <div className="flex flex-wrap gap-1.5 min-h-[22px]">
+                    {team.requiredRoles.length > 0 && (
+                        <>
+                            {team.requiredRoles.slice(0, 3).map((roleId) => (
+                                <span key={roleId} className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
+                                    {ROLE_LABELS[roleId]}
+                                </span>
+                            ))}
+                            {team.requiredRoles.length > 3 && (
+                                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-text/5 text-text/60 border border-text/10">+{team.requiredRoles.length - 3}</span>
+                            )}
+                        </>
+                    )}
                 </div>
-            )}
+            </div>
 
             {/* 하단 액션 */}
             <div className="flex items-center justify-between pt-4 border-t border-text/10 mt-2">

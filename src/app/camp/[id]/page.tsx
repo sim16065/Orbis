@@ -13,11 +13,19 @@ import { MemberSidebar } from "./_components/MemberSidebar";
 import { InquiryModal } from "./_components/InquiryModal";
 import { ApplyModal } from "./_components/apply-modal";
 import { useTeamDetail } from "./_hooks/useTeamDetail";
+import { getAllTeams } from "@/lib/team-store";
+import { useState, useEffect } from "react";
 
 export default function TeamDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
+    const [allTeams, setAllTeams] = useState(teams);
     const { isChatModalOpen, openInquiryModal, closeInquiryModal, isApplyModalOpen, openApplyModal, closeApplyModal, applied, applyToTeam } = useTeamDetail(id);
-    const team = teams.find((t) => t.id === id);
+
+    useEffect(() => {
+        setAllTeams(getAllTeams());
+    }, []);
+
+    const team = allTeams.find((t) => t.id === id);
 
     if (!team) {
         return <div className="min-h-screen flex items-center justify-center text-text text-xl font-bold">팀을 찾을 수 없습니다.</div>;

@@ -118,48 +118,67 @@ export function MemberSidebar({ team, applied, openApplyModal, openInquiryModal 
             <div className="bg-card border border-text/10 rounded-2xl p-6">
                 <h3 className="font-extrabold text-sm text-text/60 mb-6">타임라인</h3>
                 <div className="relative border-l-2 border-text/5 ml-3 space-y-6 pb-2">
-                    <div className="relative pl-6">
-                        <div className="absolute w-3 h-3 bg-emerald-500 rounded-full -left-[7px] top-1 border-2 border-background" />
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <p className="text-sm font-extrabold text-text/90">팀 모집 시작</p>
-                                <p className="text-[10px] font-bold text-text/40 mt-1">1/16</p>
-                            </div>
-                            <Check className="w-4 h-4 text-emerald-500" />
-                        </div>
-                    </div>
+                    {(() => {
+                        const today = new Date();
+                        const timelineEvents = [
+                            { label: "팀 모집 시작", date: "2026-01-16", dateLabel: "1/16" },
+                            { label: "팀원 모집 완료 목표", date: "2026-01-20", dateLabel: "1/20" },
+                            { label: "아이디어 기획 및 역할 분담", date: "2026-01-22", dateLabel: "1/22" },
+                            { label: "해커톤 개최일", date: "2026-01-25", dateLabel: "1/25" },
+                            { label: "최종 제출 마감", date: "2026-01-27", dateLabel: "1/27" },
+                        ];
 
-                    <div className="relative pl-6">
-                        <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-amber-500 shadow-[0_0_0_2px_rgba(245,158,11,0.2)]" />
-                        <div>
-                            <p className="text-sm font-extrabold text-text">팀원 모집 완료 목표</p>
-                            <p className="text-[10px] font-bold text-text/40 mt-1">1/20</p>
-                        </div>
-                    </div>
+                        // Determine the "Active" one as the first one that hasn't passed
+                        let activeFound = false;
 
-                    <div className="relative pl-6">
-                        <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-text/20" />
-                        <div>
-                            <p className="text-sm font-bold text-text/40">아이디어 기획 및 역할 분담</p>
-                            <p className="text-[10px] font-medium text-text/30 mt-1">1/22</p>
-                        </div>
-                    </div>
+                        return timelineEvents.map((event, idx) => {
+                            const eventDate = new Date(event.date);
+                            const isPast = eventDate < today;
+                            const isToday = eventDate.toDateString() === today.toDateString();
+                            
+                            let status: 'past' | 'active' | 'pending' = 'pending';
+                            
+                            if (isPast) {
+                                status = 'past';
+                            } else if (!activeFound) {
+                                status = 'active';
+                                activeFound = true;
+                            }
 
-                    <div className="relative pl-6">
-                        <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-text/20" />
-                        <div>
-                            <p className="text-sm font-bold text-text/40">해커톤 개최일</p>
-                            <p className="text-[10px] font-medium text-text/30 mt-1">1/25</p>
-                        </div>
-                    </div>
-
-                    <div className="relative pl-6">
-                        <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-text/20" />
-                        <div>
-                            <p className="text-sm font-bold text-text/40">최종 제출 마감</p>
-                            <p className="text-[10px] font-medium text-text/30 mt-1">1/27</p>
-                        </div>
-                    </div>
+                            return (
+                                <div key={idx} className="relative pl-6">
+                                    {status === 'past' ? (
+                                        <>
+                                            <div className="absolute w-3 h-3 bg-emerald-500 rounded-full -left-[7px] top-1 border-2 border-background" />
+                                            <div className="flex justify-between items-start">
+                                                <div>
+                                                    <p className="text-sm font-extrabold text-text/90">{event.label}</p>
+                                                    <p className="text-[10px] font-bold text-text/40 mt-1">{event.dateLabel}</p>
+                                                </div>
+                                                <Check className="w-4 h-4 text-emerald-500" />
+                                            </div>
+                                        </>
+                                    ) : status === 'active' ? (
+                                        <>
+                                            <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-amber-500 shadow-[0_0_0_2px_rgba(245,158,11,0.2)]" />
+                                            <div>
+                                                <p className="text-sm font-extrabold text-text">{event.label}</p>
+                                                <p className="text-[10px] font-bold text-text/40 mt-1">{event.dateLabel}</p>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-text/20" />
+                                            <div>
+                                                <p className="text-sm font-bold text-text/40">{event.label}</p>
+                                                <p className="text-[10px] font-medium text-text/30 mt-1">{event.dateLabel}</p>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            );
+                        });
+                    })()}
                 </div>
             </div>
         </div>
