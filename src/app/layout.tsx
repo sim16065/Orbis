@@ -10,10 +10,18 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Orbis — 해커톤 플랫폼",
+  title: {
+    default: "Orbis — 해커톤 플랫폼",
+    template: "%s | Orbis",
+  },
   description:
     "Orbis에서 최고의 해커톤을 찾고, 팀을 모집하고, 함께 성장하세요.",
   keywords: ["해커톤", "팀 모집", "개발자", "코딩 대회"],
+  icons: {
+    icon: "/orbislogo.png",
+    apple: "/orbislogo.png",
+    shortcut: "/orbislogo.png",
+  },
 };
 
 export default function RootLayout({

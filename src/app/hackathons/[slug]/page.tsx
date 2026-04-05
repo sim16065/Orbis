@@ -34,6 +34,12 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
     const [activeSection, setActiveSection] = useState("overview");
 
     useEffect(() => {
+        if (hackathon) {
+            document.title = `${hackathon.title} | Orbis`;
+        }
+    }, [hackathon]);
+
+    useEffect(() => {
         const handleScroll = () => {
             const sectionElements = SECTIONS.map(s => document.getElementById(s.id));
             const scrollPosition = window.scrollY + 200; // Offset for top sticky nav

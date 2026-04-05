@@ -64,15 +64,16 @@ export default function CampPage() {
 
     useEffect(() => {
         setAllTeams(getAllTeams());
+        document.title = "팀 찾기 | Orbis";
     }, []);
 
-    const filteredTeams = useMemo(() => 
+    const filteredTeams = useMemo(() =>
         getFilteredTeams(allTeams, search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly),
-    [allTeams, search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly]);
+        [allTeams, search, selectedRoles, selectedSkills, selectedHackathon, isRecruitingOnly]);
 
     const handleAddTeam = (data: any) => {
         const selectedHack = hackathons.find(h => h.id === data.hackathonId);
-        
+
         const newTeam: Team = {
             id: Date.now().toString(),
             name: data.teamName,
@@ -155,7 +156,7 @@ export default function CampPage() {
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        <button 
+                        <button
                             onClick={() => setIsCreateModalOpen(true)}
                             className="px-6 py-3 rounded-2xl bg-primary text-background font-bold shadow-lg shadow-primary/30 hover:opacity-90 hover:-translate-y-0.5 transition-all"
                         >

@@ -27,6 +27,12 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
 
     const team = allTeams.find((t) => t.id === id);
 
+    useEffect(() => {
+        if (team) {
+            document.title = `${team.name} | Orbis`;
+        }
+    }, [team]);
+
     if (!team) {
         return <div className="min-h-screen flex items-center justify-center text-text text-xl font-bold">팀을 찾을 수 없습니다.</div>;
     }

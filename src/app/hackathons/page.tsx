@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { hackathons } from "@/data/hackathons";
 import HackathonCard from "@/components/hackathon-card";
 import { useBookmarks } from "@/lib/hooks";
@@ -24,6 +24,10 @@ export default function HackathonsPage() {
     const [sortBy, setSortBy] = useState("recent");
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const { isBookmarked, toggleBookmark } = useBookmarks();
+
+    useEffect(() => {
+        document.title = "해커톤 | Orbis";
+    }, []);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 

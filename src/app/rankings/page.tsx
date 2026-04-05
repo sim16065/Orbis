@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { leaderboards } from "@/data/leaderboards";
 import { Badge, Card } from "@/components/ui";
 
@@ -12,6 +13,10 @@ const badgeConfig: Record<string, { label: string; color: string; bg: string }> 
 };
 
 export default function RankingsPage() {
+    useEffect(() => {
+        document.title = "랭킹 | Orbis";
+    }, []);
+
     const topThree = leaderboards.slice(0, 3);
     const others = leaderboards.slice(3);
 
