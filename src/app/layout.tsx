@@ -29,7 +29,7 @@ export default function RootLayout({
         <Navbar />
         <div className="w-full" />
 
-        <main className="pt-16 pb-80 w-full flex-1 flex flex-col items-center">
+        <main className="pt-16 pb-20 w-full flex-1 flex flex-col items-center">
           <div className="w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
             {children}
           </div>
