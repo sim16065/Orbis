@@ -57,10 +57,15 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                     {/* 메인 뷰 (좌측) */}
                     <div className="xl:col-span-2 space-y-6">
-                        <ProjectIdea description={team.description} />
+                        <ProjectIdea
+                            description={team.description}
+                            problem={team.problem}
+                            solution={team.solution}
+                            keyFeatures={team.keyFeatures}
+                        />
                         <TechStack requiredSkills={team.requiredSkills} />
                         <RequiredRoles team={team} />
-                        <CommunicationRules />
+                        <CommunicationRules team={team} />
                     </div>
 
                     {/* 사이드바 (우측) 액션 카드 */}
@@ -76,9 +81,9 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
             </div>
 
             <InquiryModal isOpen={isChatModalOpen} onClose={closeInquiryModal} />
-            <ApplyModal 
-                isOpen={isApplyModalOpen} 
-                onClose={closeApplyModal} 
+            <ApplyModal
+                isOpen={isApplyModalOpen}
+                onClose={closeApplyModal}
                 team={team}
                 onSubmit={() => {
                     applyToTeam(team.id);

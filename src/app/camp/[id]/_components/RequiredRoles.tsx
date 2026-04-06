@@ -45,14 +45,6 @@ export function RequiredRoles({ team }: RequiredRolesProps) {
                                         ))}
                                     </div>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold mb-2 opacity-60 text-text">우대 사항</p>
-                                    <ul className={`text-sm space-y-1.5 ${color.listText} font-medium`}>
-                                        <li className="flex items-center gap-2"><span className="opacity-40 text-xs">○</span> 관련 도메인(법률, 핀테크 등) 프로젝트 경험</li>
-                                        <li className="flex items-center gap-2"><span className="opacity-40 text-xs">○</span> 팀 단위 협업 및 코드 리뷰 경험</li>
-                                        <li className="flex items-center gap-2"><span className="opacity-40 text-xs">○</span> GitHub 생태계 활용 능숙자</li>
-                                    </ul>
-                                </div>
                             </div>
                         );
                     })

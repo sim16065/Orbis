@@ -120,24 +120,21 @@ export function MemberSidebar({ team, applied, openApplyModal, openInquiryModal 
                 <div className="relative border-l-2 border-text/5 ml-3 space-y-6 pb-2">
                     {(() => {
                         const today = new Date();
-                        const timelineEvents = [
-                            { label: "팀 모집 시작", date: "2026-01-16", dateLabel: "1/16" },
-                            { label: "팀원 모집 완료 목표", date: "2026-01-20", dateLabel: "1/20" },
-                            { label: "아이디어 기획 및 역할 분담", date: "2026-01-22", dateLabel: "1/22" },
-                            { label: "해커톤 개최일", date: "2026-01-25", dateLabel: "1/25" },
-                            { label: "최종 제출 마감", date: "2026-01-27", dateLabel: "1/27" },
-                        ];
-
-                        // Determine the "Active" one as the first one that hasn't passed
+                        today.setHours(0, 0, 0, 0); // Zero out for exact date comparison
                         let activeFound = false;
 
-                        return timelineEvents.map((event, idx) => {
+                        return team.timeline.map((event, idx) => {
                             const eventDate = new Date(event.date);
+                            eventDate.setHours(0, 0, 0, 0);
+
                             const isPast = eventDate < today;
-                            const isToday = eventDate.toDateString() === today.toDateString();
-                            
+                            const isToday = eventDate.getTime() === today.getTime();
+
+                            // Format YYYY-MM-DD to M/D
+                            const dateLabel = `${eventDate.getMonth() + 1}/${eventDate.getDate()}`;
+
                             let status: 'past' | 'active' | 'pending' = 'pending';
-                            
+
                             if (isPast) {
                                 status = 'past';
                             } else if (!activeFound) {
@@ -150,29 +147,27 @@ export function MemberSidebar({ team, applied, openApplyModal, openInquiryModal 
                                     {status === 'past' ? (
                                         <>
                                             <div className="absolute w-3 h-3 bg-emerald-500 rounded-full -left-[7px] top-1 border-2 border-background" />
-                                            <div className="flex justify-between items-start">
+                                            <div className="flex justify-between items-start opacity-60">
                                                 <div>
-                                                    <p className="text-sm font-extrabold text-text/90">{event.label}</p>
-                                                    <p className="text-[10px] font-bold text-text/40 mt-1">{event.dateLabel}</p>
+                                                    <p className="text-sm font-extrabold text-text/80">{event.task}</p>
+                                                    <p className="text-[10px] font-bold text-text/40 mt-1">{dateLabel}</p>
                                                 </div>
                                                 <Check className="w-4 h-4 text-emerald-500" />
                                             </div>
                                         </>
                                     ) : status === 'active' ? (
                                         <>
-                                            <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-amber-500 shadow-[0_0_0_2px_rgba(245,158,11,0.2)]" />
+                                            <div className="absolute w-3 h-3 bg-amber-500 rounded-full -left-[7px] top-1.5 border-2 border-background shadow-[0_0_12px_rgba(245,158,11,0.6)] animate-pulse" />
                                             <div>
-                                                <p className="text-sm font-extrabold text-text">{event.label}</p>
-                                                <p className="text-[10px] font-bold text-text/40 mt-1">{event.dateLabel}</p>
+                                                <p className="text-sm font-black text-text">{event.task}</p>
+                                                <p className="text-[10px] font-black text-text/40">{dateLabel}</p>
                                             </div>
                                         </>
                                     ) : (
                                         <>
                                             <div className="absolute w-3 h-3 bg-background rounded-full -left-[7px] top-1.5 border-2 border-text/20" />
-                                            <div>
-                                                <p className="text-sm font-bold text-text/40">{event.label}</p>
-                                                <p className="text-[10px] font-medium text-text/30 mt-1">{event.dateLabel}</p>
-                                            </div>
+                                            <p className="text-sm font-bold text-text">{event.task}</p>
+                                            <p className="text-[10px] font-black text-text/40">{dateLabel}</p>
                                         </>
                                     )}
                                 </div>

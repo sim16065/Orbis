@@ -90,6 +90,11 @@ export default function CampPage() {
                 if (p.role) acc[p.role] = p.skills;
                 return acc;
             }, {}),
+            problem: data.problem,
+            solution: data.solution,
+            keyFeatures: data.keyFeatures,
+            timeline: data.timeline,
+            communication: data.communicationMethod,
             isRecruiting: true,
             createdAt: new Date().toISOString().split('T')[0]
         };
