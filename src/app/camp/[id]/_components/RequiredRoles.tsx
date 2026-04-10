@@ -25,7 +25,7 @@ export function RequiredRoles({ team }: RequiredRolesProps) {
                         const roleData = ROLES.find((r) => r.id === roleId);
 
                         return (
-                            <div key={roleId} className={`${color.bg} border ${color.border} rounded-2xl p-6`}>
+                            <div key={`${roleId}-${idx}`} className={`${color.bg} border ${color.border} rounded-2xl p-6`}>
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className={`font-extrabold text-lg flex items-center gap-2 ${color.text}`}>
                                         <span className={`w-2.5 h-2.5 rounded-full ${color.dot}`}></span>

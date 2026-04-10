@@ -80,8 +80,8 @@ export function TeamCard({ team }: TeamCardProps) {
                 <div className="flex flex-wrap gap-1.5 min-h-[22px]">
                     {team.requiredRoles.length > 0 && (
                         <>
-                            {team.requiredRoles.slice(0, 3).map((roleId) => (
-                                <span key={roleId} className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
+                            {team.requiredRoles.slice(0, 3).map((roleId, idx) => (
+                                <span key={`${roleId}-${idx}`} className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
                                     {ROLE_LABELS[roleId]}
                                 </span>
                             ))}
