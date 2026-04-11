@@ -16,7 +16,7 @@ export function TeamCard({ team }: TeamCardProps) {
     return (
         <Link
             href={`/camp/${team.id}`}
-            className="block h-full bg-card border border-text/10 rounded-[2rem] p-8 transition-all duration-300 hover:border-primary/40 hover:shadow-md group"
+            className="block h-full bg-card border border-text/10 rounded-2xl md:rounded-[2rem] p-6 md:p-8 transition-all duration-300 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 group"
         >
             {/* 헤더 */}
             <div className="flex items-start justify-between mb-4">

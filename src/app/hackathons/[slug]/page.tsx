@@ -76,6 +76,15 @@ export default function HackathonDetailPage({ params }: { params: Promise<{ slug
                 />
 
                 <div className="relative z-20 max-w-7xl mx-auto px-6 h-full flex flex-col pt-8 pb-10">
+                    {/* 뒤로가기 버튼 */}
+                    <Link 
+                        href="/hackathons" 
+                        className="inline-flex items-center gap-1.5 text-sm font-bold text-text/70 hover:text-text transition-colors mb-4 w-fit"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                        해커톤 목록
+                    </Link>
+                    
                     {/* 중앙 여백을 밀어내어 타이틀을 하단에 고정 */}
                     <div className="flex-1" />
 

@@ -5,14 +5,20 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const navItems = [
-    { href: "/hackathons", label: "해커톤" },
-    { href: "/camp", label: "팀 찾기" },
-    { href: "/rankings", label: "랭킹" },
+    { href: "/hackathons", label: "해커톤", icon: "🎯" },
+    { href: "/camp", label: "팀 찾기", icon: "👥" },
+    { href: "/rankings", label: "랭킹", icon: "🏆" },
+];
+
+const mobileNavItems = [
+    { href: "/", label: "홈", icon: "🏠" },
+    ...navItems,
 ];
 
 interface NavLinkProps {
     href: string;
     label: string;
+    icon?: string;
     isActive: boolean;
     isMobile?: boolean;
 }
@@ -20,15 +26,28 @@ interface NavLinkProps {
 const NavLink = ({
     href,
     label,
+    icon,
     isActive,
     isMobile = false
 }: NavLinkProps) => {
-    const baseStyle = "transition-colors font-bold";
+    const baseStyle = "transition-all font-bold";
     const desktopStyle = `text-sm ${isActive ? "text-primary" : "text-text/60 hover:text-text"}`;
-    const mobileStyle = `flex-1 flex flex-col items-center gap-1.5 py-4 text-sm ${isActive ? "text-primary" : "text-text/60"}`;
+    const mobileStyle = `flex-1 flex flex-col items-center gap-1 py-3 text-[11px] ${isActive ? "text-primary" : "text-text/50"} relative`;
+
+    if (isMobile) {
+        return (
+            <Link href={href} className={`${baseStyle} ${mobileStyle}`}>
+                {isActive && (
+                    <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary rounded-full" />
+                )}
+                <span className="text-lg">{icon}</span>
+                <span>{label}</span>
+            </Link>
+        );
+    }
 
     return (
-        <Link href={href} className={isMobile ? `${baseStyle} ${mobileStyle}` : `${baseStyle} ${desktopStyle}`}>
+        <Link href={href} className={`${baseStyle} ${desktopStyle}`}>
             {label}
         </Link>
     );
@@ -42,17 +61,24 @@ export default function Navbar() {
 
     useEffect(() => {
         setMounted(true);
-        const saved = localStorage.getItem("theme") as "light" | "dark" ||
-            (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-        setTheme(saved);
-        document.documentElement.setAttribute("data-theme", saved);
+        const saved = localStorage.getItem("theme") as "light" | "dark" | null;
+        const systemPreference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        const initialTheme = saved || systemPreference;
+        setTheme(initialTheme);
+        applyTheme(initialTheme);
     }, []);
+
+    const applyTheme = (newTheme: "light" | "dark") => {
+        document.documentElement.setAttribute("data-theme", newTheme);
+        document.documentElement.classList.remove("light", "dark");
+        document.documentElement.classList.add(newTheme);
+    };
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
         setTheme(newTheme);
         localStorage.setItem("theme", newTheme);
-        document.documentElement.setAttribute("data-theme", newTheme);
+        applyTheme(newTheme);
     };
 
     // Hydration 이슈 방지: 클라이언트 마운트 전에는 아무것도 렌더링하지 않거나 플레이스홀더를 보여줍니다.
@@ -119,13 +145,13 @@ export default function Navbar() {
                 </div>
             </header>
 
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 border-t border-text/10 backdrop-blur-xl">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 border-t border-text/10 backdrop-blur-xl safe-area-pb">
                 <div className="flex">
-                    {navItems.map((item) => (
+                    {mobileNavItems.map((item) => (
                         <NavLink
                             key={item.href}
                             {...item}
-                            isActive={pathname.startsWith(item.href)}
+                            isActive={item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)}
                             isMobile={true}
                         />
                     ))}

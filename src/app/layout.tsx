@@ -30,19 +30,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="dark">
+    <html lang="ko" className="dark" suppressHydrationWarning>
       <body
-        className={`${outfit.variable} font-sans antialiased bg-slate-950 text-white min-h-screen flex flex-col items-center`}
+        className={`${outfit.variable} font-sans antialiased bg-background text-text min-h-screen flex flex-col`}
       >
         <Navbar />
-        <div className="w-full" />
-
-        <main className="pt-16 pb-20 w-full flex-1 flex flex-col items-center">
-          <div className="w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
-            {children}
-          </div>
+        <main className="pt-16 pb-20 md:pb-8 w-full flex-1 flex flex-col">
+          {children}
         </main>
+        <Footer />
       </body>
     </html>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="w-full border-t border-text/10 bg-background/80 backdrop-blur-xl pb-20 md:pb-0">
+      <div className="max-w-[1440px] mx-auto px-6 py-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <img src="/orbislogo.png" alt="Orbis" className="h-6 w-auto opacity-60" />
+            <span className="text-sm font-bold text-text/40">
+              © {new Date().getFullYear()} Orbis. All rights reserved.
+            </span>
+          </div>
+          <div className="flex items-center gap-6">
+            <a href="#" className="text-xs font-medium text-text/40 hover:text-text transition-colors">이용약관</a>
+            <a href="#" className="text-xs font-medium text-text/40 hover:text-text transition-colors">개인정보처리방침</a>
+            <a href="#" className="text-xs font-medium text-text/40 hover:text-text transition-colors">문의하기</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
