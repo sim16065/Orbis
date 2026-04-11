@@ -49,7 +49,7 @@ export default function TierGuide() {
                 >
                     <div className="flex items-center gap-3">
                         <InfoIcon className="w-4 h-4 text-sky-500" />
-                        <span className="text-sm font-bold text-text tracking-tight">랭크 티어 가이드</span>
+                        <span className="text-[17px] font-bold text-text tracking-tight">랭크 티어 가이드</span>
                     </div>
                     <ChevronDown className={`w-4 h-4 text-text/30 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -62,7 +62,7 @@ export default function TierGuide() {
                                 <button
                                     key={tier.id}
                                     onClick={() => setActiveTier(tier)}
-                                    className={`px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 border transition-all ${activeTier.id === tier.id
+                                    className={`px-5 py-2.5 rounded-xl text-[16px] font-semibold flex items-center gap-2 border transition-all ${activeTier.id === tier.id
                                         ? `${tier.activeBg} text-white border-transparent shadow-lg shadow-${tier.id}/20`
                                         : `bg-transparent text-text/40 border-text/10 hover:border-text/20`
                                         }`}

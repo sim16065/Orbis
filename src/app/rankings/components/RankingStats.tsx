@@ -34,8 +34,8 @@ export function TierBar({ label, count, color, total }: { label: string, count: 
 
 export function TierDistribution({ totalParticipants }: { totalParticipants: number }) {
     return (
-        <div className="lg:col-span-2 xl:col-span-1 bg-white border border-slate-200/60 rounded-3xl p-6 shadow-sm">
-            <div className="flex items-center gap-2 mb-4 text-xs font-black text-slate-400 uppercase tracking-widest">
+        <div className="lg:col-span-2 xl:col-span-1 bg-card border border-text/10 rounded-3xl p-6 shadow-sm">
+            <div className="flex items-center gap-2 mb-4 text-xs font-black text-text/40 uppercase tracking-widest">
                 <BarChart3 className="w-3.5 h-3.5" />
                 티어 분포 (%)
             </div>

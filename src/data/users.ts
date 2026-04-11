@@ -90,5 +90,11 @@ export const users: User[] = [
         name: "오준혁",
         skills: ["Python", "NLP", "TTS/STT"],
         avatarUrl: "https://i.pravatar.cc/150?u=u14",
+    },
+    {
+        id: "u15",
+        name: "강승민",
+        skills: ["Java", "Spring Boot", "MySQL"],
+        avatarUrl: "https://i.pravatar.cc/150?u=u15",
     }
 ];

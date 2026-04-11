@@ -7,9 +7,8 @@ export interface LeaderboardEntry {
     totalPoints: number;
     hackathonsJoined: number;
     hackathonsWon: number;
-    streak: number;        // 연속 참여 (불꽃 아이콘)
+    streak: number;        // 연속 참여 
     change: number;        // 순위 변동 (+1, -1, 0)
-    role: string;          // 직무 (Frontend, Backend, AI/ML, Design, Fullstack, Blockchain, Mobile)
     topSkills: string[];
     recentHackathon: string;
     badge: "bronze" | "silver" | "gold" | "platinum" | "diamond" | "master";
@@ -26,7 +25,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 7,
         streak: 6,
         change: 0,
-        role: "Fullstack",
         topSkills: ["React", "TypeScript", "Node.js"],
         recentHackathon: "AI Innovation Hackathon 2025",
         badge: "master",
@@ -41,7 +39,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 5,
         streak: 4,
         change: 1,
-        role: "AI/ML",
         topSkills: ["Python", "TensorFlow", "PyTorch"],
         recentHackathon: "Web3 Builders Summit",
         badge: "diamond",
@@ -56,7 +53,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 4,
         streak: 3,
         change: -1,
-        role: "Blockchain",
         topSkills: ["Solidity", "Web3.js", "Rust"],
         recentHackathon: "Web3 Builders Summit",
         badge: "diamond",
@@ -71,7 +67,7 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 3,
         streak: 5,
         change: 2,
-        role: "Fullstack",
+
         topSkills: ["Vue.js", "Django", "PostgreSQL"],
         recentHackathon: "GreenTech Challenge",
         badge: "platinum",
@@ -86,7 +82,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 3,
         streak: 2,
         change: -1,
-        role: "AI/ML",
         topSkills: ["Python", "Pandas", "Scikit-learn"],
         recentHackathon: "AI Innovation Hackathon 2025",
         badge: "platinum",
@@ -101,7 +96,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 2,
         streak: 3,
         change: 1,
-        role: "Design",
         topSkills: ["Figma", "Framer", "React"],
         recentHackathon: "EduTech Innovation",
         badge: "gold",
@@ -116,7 +110,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 2,
         streak: 1,
         change: 0,
-        role: "Backend",
         topSkills: ["AWS", "Kubernetes", "Terraform"],
         recentHackathon: "GreenTech Challenge",
         badge: "gold",
@@ -131,7 +124,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 2,
         change: 2,
-        role: "AI/ML",
         topSkills: ["Python", "JAX", "HuggingFace"],
         recentHackathon: "AI Innovation Hackathon 2025",
         badge: "silver",
@@ -146,7 +138,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 0,
         change: 0,
-        role: "Frontend",
         topSkills: ["React", "Tailwind", "Vite"],
         recentHackathon: "EduTech Innovation",
         badge: "silver",
@@ -161,7 +152,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 1,
         change: -1,
-        role: "Backend",
         topSkills: ["Java", "Spring", "MySQL"],
         recentHackathon: "Web3 Builders Summit",
         badge: "silver",
@@ -176,7 +166,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 3,
         change: 3,
-        role: "Backend",
         topSkills: ["Docker", "Jenkins", "Ansible"],
         recentHackathon: "GreenTech Challenge",
         badge: "bronze",
@@ -191,7 +180,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 1,
         change: 1,
-        role: "Mobile",
         topSkills: ["React Native", "Expo", "TypeScript"],
         recentHackathon: "AI Innovation Hackathon 2025",
         badge: "bronze",
@@ -206,7 +194,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 0,
         change: 0,
-        role: "Fullstack",
         topSkills: ["Python", "React", "PostgreSQL"],
         recentHackathon: "GreenTech Challenge",
         badge: "bronze",
@@ -221,7 +208,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 2,
         change: 2,
-        role: "Frontend",
         topSkills: ["JavaScript", "HTML", "CSS"],
         recentHackathon: "EduTech Innovation",
         badge: "bronze",
@@ -236,7 +222,6 @@ export const leaderboards: LeaderboardEntry[] = [
         hackathonsWon: 0,
         streak: 0,
         change: 0,
-        role: "Design",
         topSkills: ["No-code", "Figma", "Python"],
         recentHackathon: "AI Innovation Hackathon 2025",
         badge: "bronze",

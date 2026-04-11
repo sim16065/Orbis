@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { leaderboards } from "@/data/leaderboards";
 import {
     Trophy,
     Flame,
@@ -19,6 +18,10 @@ import { StatCard, TierDistribution } from "./components/RankingStats";
 import TopRankCard from "./components/TopRankingSection";
 import { TableRow } from "./components/RankingTable";
 
+// Data
+import { leaderboards } from "@/data/leaderboards";
+import { users } from "@/data/users";
+
 // Constants
 import { TIER_CONFIG } from "./constants";
 
@@ -26,17 +29,29 @@ export default function RankingsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedTier, setSelectedTier] = useState<string>("전체");
 
+    // Memoized Data with User Profiles Joined
+    const leaderboardsWithUser = useMemo(() => {
+        return leaderboards.map(entry => {
+            const userProfile = users.find(u => u.id === entry.userId);
+            return {
+                ...entry,
+                username: userProfile?.name || entry.username,
+                avatarUrl: userProfile?.avatarUrl || entry.avatarUrl,
+            };
+        });
+    }, []);
+
     // Memoized Filtered List
     const filteredList = useMemo(() => {
-        return leaderboards.filter(entry => {
+        return leaderboardsWithUser.filter(entry => {
             const matchesSearch = entry.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                entry.displayName.toLowerCase().includes(searchQuery.toLowerCase());
+                entry.username.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesTier = selectedTier === "전체" || entry.badge === selectedTier.toLowerCase();
             return matchesSearch && matchesTier;
         });
-    }, [searchQuery, selectedTier]);
+    }, [searchQuery, selectedTier, leaderboardsWithUser]);
 
-    const topThree = leaderboards.slice(0, 3);
+    const topThree = leaderboardsWithUser.slice(0, 3);
     const otherRankings = filteredList.filter(entry => entry.rank > 3);
 
     return (
@@ -94,10 +109,21 @@ export default function RankingsPage() {
                     <Crown className="w-6 h-6 text-amber-500" />
                     TOP 3
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                    <TopRankCard entry={topThree[1]} rank={2} medal="🥈" />
-                    <TopRankCard entry={topThree[0]} rank={1} medal="🥇" featured />
-                    <TopRankCard entry={topThree[2]} rank={3} medal="🥉" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-24 items-end max-w-5xl mx-auto px-4">
+                    {/* 2nd Place */}
+                    <div className="order-2 md:order-1 h-full flex flex-col justify-end">
+                        <TopRankCard entry={topThree[1]} rank={2} />
+                    </div>
+                    
+                    {/* 1st Place - Winner */}
+                    <div className="order-1 md:order-2 h-full">
+                        <TopRankCard entry={topThree[0]} rank={1} featured />
+                    </div>
+                    
+                    {/* 3rd Place */}
+                    <div className="order-3 md:order-3 h-full flex flex-col justify-end">
+                        <TopRankCard entry={topThree[2]} rank={3} />
+                    </div>
                 </div>
 
                 {/* 5. Overall Rankings Table Section */}
@@ -111,22 +137,22 @@ export default function RankingsPage() {
                     <div className="p-8 pb-4 space-y-6">
                         <div className="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
                             <div className="relative w-full lg:max-w-3xl">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" />
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text/30" />
                                 <input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="사용자명 혹은 닉네임 검색..."
-                                    className="w-full pl-12 pr-6 py-4 rounded-2xl bg-slate-50 border border-slate-100 text-sm font-bold focus:outline-none focus:border-primary/30 transition-all placeholder:text-slate-300"
+                                    className="w-full pl-12 pr-6 py-4 rounded-2xl bg-text/5 border border-text/10 text-sm font-bold focus:outline-none focus:border-primary/30 transition-all placeholder:text-text/30"
                                 />
                             </div>
                             <div className="flex gap-2 shrink-0">
-                                <select className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-black appearance-none cursor-pointer">
+                                <select className="px-4 py-2 bg-text/5 border border-text/10 rounded-xl text-xs font-black appearance-none cursor-pointer text-text/60">
                                     <option>포인트순</option>
                                     <option>참여순</option>
                                     <option>우승순</option>
                                 </select>
-                                <select className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-black appearance-none cursor-pointer">
+                                <select className="px-4 py-2 bg-text/5 border border-text/10 rounded-xl text-xs font-black appearance-none cursor-pointer text-text/60">
                                     <option>전체 기간</option>
                                     <option>최근 3달</option>
                                     <option>최근 1달</option>
@@ -137,7 +163,7 @@ export default function RankingsPage() {
                         {/* Chip Filters */}
                         <div className="space-y-4">
                             <div>
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">티어 필터</p>
+                                <p className="text-[10px] font-black text-text/40 uppercase tracking-widest mb-3">티어 필터</p>
                                 <div className="flex flex-wrap gap-2">
                                     {["전체", ...Object.keys(TIER_CONFIG).map(t => TIER_CONFIG[t].label)].map(t => (
                                         <button
@@ -145,7 +171,7 @@ export default function RankingsPage() {
                                             onClick={() => setSelectedTier(t === "전체" ? "전체" : t)}
                                             className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${(selectedTier === t)
                                                 ? "bg-primary text-white border-primary shadow-md shadow-primary/20"
-                                                : "bg-white text-slate-400 border-slate-200 hover:border-slate-300"
+                                                : "bg-card text-text/40 border-text/10 hover:border-text/20"
                                                 }`}
                                         >
                                             {t === "전체" && <span className="mr-1.5 opacity-50">🏁</span>}
@@ -155,25 +181,25 @@ export default function RankingsPage() {
                                 </div>
                             </div>
                         </div>
-                        <p className="text-xs font-bold text-slate-400 pl-1">{filteredList.length}명 표시 중</p>
+                        <p className="text-xs font-bold text-text/40 pl-1">{filteredList.length}명 표시 중</p>
                     </div>
 
                     {/* Desktop Table */}
                     <div className="w-full overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-slate-50 border-y border-slate-100">
-                                    <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">순위</th>
-                                    <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">사용자</th>
-                                    <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">포인트</th>
-                                    <th className="px-6 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">참여</th>
-                                    <th className="px-6 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">우승</th>
-                                    <th className="px-6 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">연속</th>
-                                    <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">변동</th>
+                                <tr className="bg-text/5 border-y border-text/10">
+                                    <th className="px-8 py-5 text-[11px] font-black text-text/40 uppercase tracking-widest">순위</th>
+                                    <th className="px-8 py-5 text-[11px] font-black text-text/40 uppercase tracking-widest">사용자</th>
+                                    <th className="px-8 py-5 text-[11px] font-black text-text/40 uppercase tracking-widest text-right">포인트</th>
+                                    <th className="px-6 py-5 text-[11px] font-black text-text/40 uppercase tracking-widest text-center">참여</th>
+                                    <th className="px-6 py-5 text-[11px] font-black text-text/40 uppercase tracking-widest text-center">우승</th>
+                                    <th className="px-6 py-5 text-[11px] font-black text-text/40 uppercase tracking-widest text-center">연속</th>
+                                    <th className="px-8 py-5 text-[11px] font-black text-text/40 uppercase tracking-widest text-center">변동</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
-                                {otherRankings.map((person) => (
+                            <tbody className="divide-y divide-text/5">
+                                {filteredList.map((person) => (
                                     <TableRow key={person.userId} person={person} />
                                 ))}
                             </tbody>
@@ -181,7 +207,7 @@ export default function RankingsPage() {
                     </div>
                 </div>
 
-                <p className="text-center text-xs font-bold text-slate-300 mt-8">
+                <p className="text-center text-xs font-bold text-text/20 mt-8">
                     포인트는 해커톤 참여, 수상, 팀 기여도를 기반으로 산정됩니다. 매주 월요일 업데이트.
                 </p>
             </div>
