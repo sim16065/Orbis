@@ -17,7 +17,12 @@ import {
     Shield,
     ShieldCheck,
     Gem,
-    Star
+    Star,
+    Flag,
+    MessageSquare,
+    MinusCircle,
+    Calculator,
+    RotateCcw
 } from "lucide-react";
 
 // Tier Configuration
@@ -30,12 +35,9 @@ const TIER_CONFIG: Record<string, { label: string; color: string; bg: string; bo
     bronze: { label: "Bronze", color: "text-orange-600", bg: "bg-orange-600/10", border: "border-orange-200", bar: "bg-orange-600" },
 };
 
-const ROLES = ["전체", "Frontend", "Backend", "AI/ML", "Design", "Fullstack", "Blockchain", "Mobile"];
-
 export default function RankingsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedTier, setSelectedTier] = useState<string>("전체");
-    const [selectedRole, setSelectedRole] = useState<string>("전체");
 
     // Memoized Filtered List
     const filteredList = useMemo(() => {
@@ -43,10 +45,9 @@ export default function RankingsPage() {
             const matchesSearch = entry.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 entry.displayName.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesTier = selectedTier === "전체" || entry.badge === selectedTier.toLowerCase();
-            const matchesRole = selectedRole === "전체" || entry.role === selectedRole;
-            return matchesSearch && matchesTier && matchesRole;
+            return matchesSearch && matchesTier;
         });
-    }, [searchQuery, selectedTier, selectedRole]);
+    }, [searchQuery, selectedTier]);
 
     const topThree = leaderboards.slice(0, 3);
     const otherRankings = filteredList.filter(entry => entry.rank > 3);
@@ -75,6 +76,9 @@ export default function RankingsPage() {
 
                 {/* 2. Tier Guide Accordion */}
                 <TierGuide />
+
+                {/* 3. Point Calculation Criteria */}
+                <PointCalculationGuide />
 
                 {/* 3. Stats Overview Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-12">
@@ -185,23 +189,6 @@ export default function RankingsPage() {
                                     ))}
                                 </div>
                             </div>
-                            <div>
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">역할 필터</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {ROLES.map(r => (
-                                        <button
-                                            key={r}
-                                            onClick={() => setSelectedRole(r)}
-                                            className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${selectedRole === r
-                                                ? "bg-slate-800 text-white border-slate-800 shadow-lg shadow-slate-200"
-                                                : "bg-white text-slate-400 border-slate-200 hover:border-slate-300"
-                                                }`}
-                                        >
-                                            {r}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
                         <p className="text-xs font-bold text-slate-400 pl-1">{filteredList.length}명 표시 중</p>
                     </div>
@@ -213,7 +200,6 @@ export default function RankingsPage() {
                                 <tr className="bg-slate-50 border-y border-slate-100">
                                     <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">순위</th>
                                     <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">사용자</th>
-                                    <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">기술 스택</th>
                                     <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">포인트</th>
                                     <th className="px-6 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">참여</th>
                                     <th className="px-6 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">우승</th>
@@ -340,15 +326,6 @@ function TableRow({ person }: { person: LeaderboardEntry }) {
                             {person.role} · {person.recentHackathon}
                         </p>
                     </div>
-                </div>
-            </td>
-            <td className="px-8 py-6">
-                <div className="flex justify-center gap-1.5">
-                    {person.topSkills.map((skill, idx) => (
-                        <span key={idx} className="px-2.5 py-1.5 rounded-lg bg-slate-50 text-slate-400 text-[10px] font-bold border border-slate-100">
-                            {skill}
-                        </span>
-                    ))}
                 </div>
             </td>
             <td className="px-8 py-6">
@@ -502,8 +479,8 @@ function TierIcon({ type, className }: { type: string, className?: string }) {
 }
 
 function TierGuide() {
-    const [isOpen, setIsOpen] = useState(true);
-    const [activeTier, setActiveTier] = useState(TIER_DETAILS[5]); // Default Master
+    const [isOpen, setIsOpen] = useState(false);
+    const [activeTier, setActiveTier] = useState(TIER_DETAILS[0]); // Default Bronze
 
     return (
         <div className="mb-12">
@@ -582,6 +559,181 @@ function TierGuide() {
                     </div>
                 )}
             </div>
+        </div>
+    );
+}
+
+function PointCalculationGuide() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState('participation');
+
+    const tabs = [
+        { id: 'participation', label: '해커톤 참여', icon: <Flag className="w-4 h-4" /> },
+        { id: 'awards', label: '수상 & 성과', icon: <Trophy className="w-4 h-4" /> },
+        { id: 'team', label: '팀 기여', icon: <Users className="w-4 h-4" /> },
+        { id: 'community', label: '커뮤니티 활동', icon: <MessageSquare className="w-4 h-4" /> },
+        { id: 'deduction', label: '감점 항목', icon: <MinusCircle className="w-4 h-4" /> },
+    ];
+
+    const data: Record<string, { items: any[], theme: string, warning?: string }> = {
+        participation: {
+            theme: 'emerald',
+            items: [
+                { title: '해커톤 참여 완료', desc: '팀으로 끝까지 완주 시', pts: '+50' },
+                { title: '솔로 참여 완료', desc: '1인 팀으로 완주 시', pts: '+30' },
+                { title: '연속 참여 보너스', desc: '2회 이상 연속 참여마다', pts: '+20' },
+                { title: '첫 참여', desc: '생애 첫 해커톤 참여', pts: '+10' },
+            ]
+        },
+        awards: {
+            theme: 'amber',
+            items: [
+                { title: '1등 (우승)', desc: '해커톤 최종 1위', pts: '+300' },
+                { title: '2등', desc: '해커톤 최종 2위', pts: '+200' },
+                { title: '3등', desc: '해커톤 최종 3위', pts: '+150' },
+                { title: 'TOP 10 입상', desc: '10위 이내 입상', pts: '+80' },
+                { title: '특별상 수상', desc: '심사위원 특별상 등', pts: '+100' },
+            ]
+        },
+        team: {
+            theme: 'purple',
+            items: [
+                { title: '팀장 역할 수행', desc: '팀 리더로 참여 시', pts: '+30' },
+                { title: '팀원 모집 성공', desc: '모집글로 팀 완성 시', pts: '+15' },
+                { title: '팀 리뷰 작성', desc: '팀원 상호 리뷰 완료', pts: '+10' },
+            ]
+        },
+        community: {
+            theme: 'cyan',
+            items: [
+                { title: '프로필 완성', desc: '스택, 링크 등 100% 작성', pts: '+20' },
+                { title: '멘토링 제공', desc: '다른 팀 멘토링 1회', pts: '+25' },
+                { title: '후기 작성', desc: '해커톤 참여 후기 게시', pts: '+15' },
+                { title: '추천인 등록', desc: '신규 유저 초대 시', pts: '+10' },
+            ]
+        },
+        deduction: {
+            theme: 'rose',
+            warning: '아래 항목은 포인트가 차감됩니다. 건전한 커뮤니티를 위해 규정을 준수해 주세요.',
+            items: [
+                { title: '팀 중도 이탈', desc: '해커톤 도중 팀 탈퇴', pts: '-50' },
+                { title: '규정 위반', desc: '운영 규정 위반 확인 시', pts: '-100' },
+                { title: '장기 미활동', desc: '3개월 이상 미참여 시 월별', pts: '-10' },
+            ]
+        }
+    };
+
+    const current = data[activeTab];
+
+    return (
+        <div className="bg-card rounded-2xl border border-text/10 overflow-hidden mb-12">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full p-6 px-8 flex items-center justify-between hover:bg-text/5 transition-all"
+            >
+                <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 flex items-center justify-center">
+                        <Calculator className="w-4 h-4 text-emerald-500" />
+                    </div>
+                    <h3 className="text-sm font-bold text-text">포인트 산정 기준</h3>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-text/30 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isOpen && (
+                <div className="p-8 pt-2 animate-in slide-in-from-top-4 duration-300">
+                    {/* Summary Row */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 p-6 bg-text/5 rounded-2xl">
+                        <div className="flex items-center gap-3">
+                            <Flag className="w-4 h-4 text-emerald-500" />
+                            <div>
+                                <p className="text-[15px] font-black text-emerald-500">+50pts</p>
+                                <p className="text-[10px] text-text/40 font-bold">참여만 해도</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 border-l border-text/10 pl-4">
+                            <Trophy className="w-4 h-4 text-amber-500" />
+                            <div>
+                                <p className="text-[15px] font-black text-amber-500">+300pts</p>
+                                <p className="text-[10px] text-text/40 font-bold">우승 시</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 border-l border-text/10 pl-4">
+                            <Flame className="w-4 h-4 text-rose-500" />
+                            <div>
+                                <p className="text-[15px] font-black text-rose-500">보너스 ↑</p>
+                                <p className="text-[10px] text-text/40 font-bold">연속 참여</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3 border-l border-text/10 pl-4">
+                            <RotateCcw className="w-4 h-4 text-purple-500" />
+                            <div>
+                                <p className="text-[15px] font-black text-purple-500">~500pts/회</p>
+                                <p className="text-[10px] text-text/40 font-bold">최대 획득</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Tabs */}
+                    <div className="flex flex-wrap gap-2 mb-8">
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all ${activeTab === tab.id
+                                    ? `bg-${current.theme}-500 text-white shadow-lg shadow-${current.theme}-500/20`
+                                    : 'bg-text/5 text-text/40 hover:bg-text/10'
+                                    }`}
+                            >
+                                {tab.icon}
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Content List */}
+                    <div className={`rounded-2xl border p-1 overflow-hidden transition-all duration-300 ${activeTab === 'deduction' ? 'bg-rose-500/5 border-rose-500/20' :
+                        activeTab === 'awards' ? 'bg-amber-500/5 border-amber-500/20' :
+                            activeTab === 'participation' ? 'bg-emerald-500/5 border-emerald-500/20' :
+                                activeTab === 'team' ? 'bg-purple-500/5 border-purple-500/20' :
+                                    'bg-cyan-500/5 border-cyan-500/20'
+                        }`}>
+                        {current.warning && (
+                            <div className="p-4 px-6 text-[11px] font-bold text-rose-500 flex items-center gap-2 opacity-60 italic">
+                                <InfoIcon className="w-3.5 h-3.5" />
+                                {current.warning}
+                            </div>
+                        )}
+                        <div className="divide-y divide-text/5">
+                            {current.items.map((item, idx) => (
+                                <div key={idx} className="p-5 px-8 flex items-center justify-between">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeTab === 'deduction' ? 'text-rose-500' : 'text-text/40'
+                                            }`}>
+                                            {activeTab === 'deduction' ? <MinusCircle className="w-4 h-4" /> : tabs.find(t => t.id === activeTab)?.icon}
+                                        </div>
+                                        <div>
+                                            <p className="text-[13px] font-black text-text/80">{item.title}</p>
+                                            <p className="text-[10px] font-semibold text-text/30">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                    <span className={`text-base font-black ${activeTab === 'deduction' ? 'text-rose-500' :
+                                        activeTab === 'awards' ? 'text-amber-500' :
+                                            'text-emerald-500'
+                                        }`}>
+                                        {item.pts}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-8 flex items-center gap-2 p-4 px-6 bg-text/5 rounded-xl text-[10px] font-bold text-text/40">
+                        <InfoIcon className="w-4 h-4 text-text/20" />
+                        포인트는 매주 월요일 오전 9시에 집계됩니다. 이의 신청은 해커톤 종료 후 7일 이내에 운영팀에 문의해 주세요.
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
