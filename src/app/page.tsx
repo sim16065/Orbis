@@ -118,11 +118,11 @@ export default function HomePage() {
               {/* 통계 그리드 */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-text/5 border border-text/5 rounded-2xl p-6">
-                  <div className="text-3xl font-black text-primary mb-1 tracking-tight">1,247</div>
+                  <div className="text-3xl font-black text-primary mb-1 tracking-tight">15</div>
                   <div className="text-xs font-bold opacity-50 uppercase">참가자</div>
                 </div>
                 <div className="bg-text/5 border border-text/5 rounded-2xl p-6">
-                  <div className="text-3xl font-black mb-1 tracking-tight">156</div>
+                  <div className="text-3xl font-black mb-1 tracking-tight">8</div>
                   <div className="text-xs font-bold opacity-50 uppercase">진행중</div>
                 </div>
               </div>
