@@ -62,9 +62,9 @@ export default function Navbar() {
         <>
             <header className="fixed top-0 left-0 right-0 z-50 border-b border-text/10 bg-background/80 backdrop-blur-xl flex justify-center">
                 <div className="w-full max-w-[1440px] px-6 h-16 flex items-center justify-between">
-                    <Link href="/" className="relative flex items-center group transition-transform hover:scale-105">
-                        <div className="absolute -inset-2 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <img src="/orbislogo.png" alt="로고" className="h-7 w-auto relative z-10" />
+                    <Link href="/" className="relative flex items-center group">
+                        <div className="absolute -inset-2 bg-primary/20 blur-lg rounded-full opacity-0" />
+                        <img src="/orbislogo.png" alt="로고" className="h-30 w-auto relative z-10" />
                     </Link>
 
                     <div className="flex items-center gap-10">

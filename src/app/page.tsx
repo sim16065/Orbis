@@ -3,8 +3,11 @@
 import { Search, Users, Trophy } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { hackathons } from "@/data/hackathons";
 
 export default function HomePage() {
+  const totalParticipants = hackathons.reduce((acc, h) => acc + h.participants, 0);
+  const totalHackathons = hackathons.length;
   const [currentYear, setCurrentYear] = useState<number | null>(null);
 
   useEffect(() => {
@@ -118,12 +121,12 @@ export default function HomePage() {
               {/* 통계 그리드 */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-text/5 border border-text/5 rounded-2xl p-6">
-                  <div className="text-3xl font-black text-primary mb-1 tracking-tight">15</div>
-                  <div className="text-xs font-bold opacity-50 uppercase">참가자</div>
+                  <div className="text-3xl font-black text-primary mb-1 tracking-tight">{totalParticipants.toLocaleString()}</div>
+                  <div className="text-xs font-bold opacity-50 uppercase">누적 참가자</div>
                 </div>
                 <div className="bg-text/5 border border-text/5 rounded-2xl p-6">
-                  <div className="text-3xl font-black mb-1 tracking-tight">8</div>
-                  <div className="text-xs font-bold opacity-50 uppercase">진행중</div>
+                  <div className="text-3xl font-black mb-1 tracking-tight">{totalHackathons.toLocaleString()}</div>
+                  <div className="text-xs font-bold opacity-50 uppercase">개최된 해커톤</div>
                 </div>
               </div>
 
